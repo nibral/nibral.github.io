@@ -6,7 +6,6 @@ title: 環境構築メモ
 Index
 ----
 
-<<<<<<< HEAD
 <ul>
   {% for post in site.posts %}
     <li>
@@ -15,10 +14,12 @@ Index
   {% endfor %}
 </ul>
 =======
+
+
+Twitter
+---
+
 * [Twitterに【メモ】を付けて流したやつ](http://twilog.org/_nibral/search?word=%E3%80%90%E3%83%A1%E3%83%A2%E3%80%91&ao=a)
-* [Chinachu on CentOS 6.6 + PT3](chinachu.html)
-* [PPTP VPN on RTX1000](rtx1000_pptp.html)
->>>>>>> f89d4fac9973fbd2d9d4f31d5ad7fe1d19713ae0
 
 Memo
 ----
