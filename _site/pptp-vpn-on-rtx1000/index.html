@@ -4,7 +4,6 @@
 		<meta charset="utf-8" />
 		<title>PPTP VPN on RTX1000</title>
 	</head>
-	
 	<body>
 		<h1 id="pptp-vpn-on-rtx1000">PPTP VPN on RTX1000</h1>
 
@@ -17,6 +16,8 @@
 
 <h2 id="pptp">PPTP設定</h2>
 
+<p>認証の設定</p>
+
 <pre><code>pp select 1
 pp select anonymous
 pp bind tunnel1
@@ -26,11 +27,17 @@ pp auth username ユーザ名 パスワード (IPアドレス)
 ppp ipcp ipaddress on
 ppp ipcp msext on
 ppp ccp type mppe-any
+</code></pre>
 
-ip pp remote address pool VPNクライアント用のIP(範囲指定可) 
+<p>IP範囲割り当て</p>
+
+<pre><code>ip pp remote address pool VPNクライアント用のIP(範囲指定可)
 pp ip mtu 1280
+</code></pre>
 
-pptp service type server 
+<p>PPTPサービス起動</p>
+
+<pre><code>pptp service type server
 pp enable anonymous
 pptp service on
 
@@ -47,7 +54,7 @@ no tunnel select 1
 
 <h2 id="nat">NAT追加</h2>
 
-<p>ディスクリプタ1が定義済みと仮定</p>
+<p>(ディスクリプタ1が定義済みと仮定)</p>
 
 <pre><code>nat descripter masquerade static 1 1 ルータLAN側IP tcp 1723
 nat descripter masquerade static 1 1 ルータLAN側IP gre
@@ -65,8 +72,4 @@ no pp select 1
 </code></pre>
 
 	</body>
-	
-	<footer>
-		<small>-- end --</small>
-	</footer>
 <html>

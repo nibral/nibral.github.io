@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Chinachu on CentOS 6.6 + PT3
+permalink: chinachu-on-centos
 ---
 
 Chinachu on CentOS 6.6 + PT3
@@ -141,7 +142,7 @@ yasmはepelから入れる
 	sudo yum install --enablerepo=epel yasm yasm-devel
 
 chinachuユーザをつくる
-	
+
 	yum install autoconf automake libtool
 	sudo useradd chinachu
 	sudo su chinachu
@@ -153,7 +154,7 @@ gitにパスを通す
 	source .bash_profile
 
 chinachuのダウンロード
-	
+
 	git clone git://github.com/kanreisa/Chinachu.git ~/chinachu
 	cd chinachu
 
@@ -162,22 +163,22 @@ pkgconfigにもパスを通す
 	export PKG_CONFIG_PATH=/home/chinachu/chinachu/usr/lib/pkgconfig
 	echo $PKG_CONFIG_PATH
 
-インストーラ実行	
+インストーラ実行
 
 	./chinachu installer
 		1) Auto (full)
-	./chinachu service operator initscript > /tmp/chinachu-operator 
-	./chinachu service wui initscript > /tmp/chinachu-wui 
+	./chinachu service operator initscript > /tmp/chinachu-operator
+	./chinachu service wui initscript > /tmp/chinachu-wui
 	exit(もとのユーザに戻る)
 
 サービス登録
 
-	mv /tmp/chinachu-operator /tmp/chinachu-wui /etc/init.d/ 
-	chown root:root /etc/init.d/chinachu-operator /etc/init.d/chinachu-wui 
-	chmod +x /etc/init.d/chinachu-operator /etc/init.d/chinachu-wui 
-	chkconfig -–add chinachu-operator 
-	chkconfig –-add chinachu-wui 
-	chkconfig chinachu-operator on 
+	mv /tmp/chinachu-operator /tmp/chinachu-wui /etc/init.d/
+	chown root:root /etc/init.d/chinachu-operator /etc/init.d/chinachu-wui
+	chmod +x /etc/init.d/chinachu-operator /etc/init.d/chinachu-wui
+	chkconfig -–add chinachu-operator
+	chkconfig –-add chinachu-wui
+	chkconfig chinachu-operator on
 	chkconfig chinachu-wui on
 
 参考
@@ -185,4 +186,3 @@ pkgconfigにもパスを通す
 
 * http://d.hatena.ne.jp/kt_hiro/20130113/1358051168
 * http://memo.saitodev.com/home/linux_pt2/recpt1/
-

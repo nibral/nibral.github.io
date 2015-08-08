@@ -4,7 +4,6 @@
 		<meta charset="utf-8" />
 		<title>Chinachu on CentOS 6.6 + PT3</title>
 	</head>
-	
 	<body>
 		<h1 id="chinachu-on-centos-66--pt3">Chinachu on CentOS 6.6 + PT3</h1>
 
@@ -186,19 +185,19 @@ echo $PKG_CONFIG_PATH
 
 <pre><code>./chinachu installer
 	1) Auto (full)
-./chinachu service operator initscript &gt; /tmp/chinachu-operator 
-./chinachu service wui initscript &gt; /tmp/chinachu-wui 
+./chinachu service operator initscript &gt; /tmp/chinachu-operator
+./chinachu service wui initscript &gt; /tmp/chinachu-wui
 exit(もとのユーザに戻る)
 </code></pre>
 
 <p>サービス登録</p>
 
-<pre><code>mv /tmp/chinachu-operator /tmp/chinachu-wui /etc/init.d/ 
-chown root:root /etc/init.d/chinachu-operator /etc/init.d/chinachu-wui 
-chmod +x /etc/init.d/chinachu-operator /etc/init.d/chinachu-wui 
-chkconfig -–add chinachu-operator 
-chkconfig –-add chinachu-wui 
-chkconfig chinachu-operator on 
+<pre><code>mv /tmp/chinachu-operator /tmp/chinachu-wui /etc/init.d/
+chown root:root /etc/init.d/chinachu-operator /etc/init.d/chinachu-wui
+chmod +x /etc/init.d/chinachu-operator /etc/init.d/chinachu-wui
+chkconfig -–add chinachu-operator
+chkconfig –-add chinachu-wui
+chkconfig chinachu-operator on
 chkconfig chinachu-wui on
 </code></pre>
 
@@ -209,10 +208,5 @@ chkconfig chinachu-wui on
   <li>http://memo.saitodev.com/home/linux_pt2/recpt1/</li>
 </ul>
 
-
 	</body>
-	
-	<footer>
-		<small>-- end --</small>
-	</footer>
 <html>

@@ -6,8 +6,13 @@ title: 環境構築メモ
 Index
 ----
 
-* [Chinachu on CentOS 6.6 + PT3](chinachu.html)
-* [PPTP VPN on RTX1000](rtx1000_pptp.html)
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
 
 Memo
 ----
@@ -20,4 +25,3 @@ findコマンド
 	+ `find ./* -regextype posix-egrep -regex "~.*(jpg|mp4)$"`
 	+ デフォルトでは正規表現がemacsスタイルなので、いちいちエスケープが必要
 	+ posixスタイルにしよう
-
