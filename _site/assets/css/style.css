@@ -1,0 +1,11 @@
+body {
+  width: 800px;
+  margin: auto;
+}
+
+pre, code, var, samp, kbd, .mono {
+    font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+    line-height: 1.2;
+    font-size: 14px;
+    background-color: #F7F7F7
+}
