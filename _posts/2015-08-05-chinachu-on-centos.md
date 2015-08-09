@@ -29,15 +29,15 @@ gitはソースから新しいのを入れる
 カードリーダー関連
 ----
 
-    yum install pcsc-lite pcsc-lite-devel pcsc-lite-libs
-    yum install ccid
+	yum install pcsc-lite pcsc-lite-devel pcsc-lite-libs
+	yum install ccid
 
 perl-gtkはRPMForgeから入れる
 
 	wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
 	sudo rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
-	sudo rpm -K rpmforge-release-0.5.3-1.el6.rf.*.rpm (Verify)
-	sudo rpm -K rpmforge-release-0.5.3-1.el6.rf.*.rpm (Install)
+	sudo rpm -K rpmforge-release-0.5.3-1.el6.rf.\*.rpm (Verify)
+	sudo rpm -K rpmforge-release-0.5.3-1.el6.rf.\*.rpm (Install)
 	yum install --enablerepo=rpmforge -y perl-Gtk2
 
 pcsc-perlはソースから
@@ -66,7 +66,7 @@ pcsc-toolsもソースから
 	sudo chkconfig haldaemon on
 	sudo chkconfig pcscd on
 
-openctが競合するらしいので止める
+openctが競合するので止める
 
 	sudo service openct stop
 	sudo chkconfig openct off
@@ -121,10 +121,10 @@ PT3ドライバ
 
 ライブラリが読めないエラーが出た
 
-    ldd /usr/local/bin/recpt1	読めないライブラリを確認
-    sudo vi /etc/ld.so.conf		"/usr/local/lib"を末尾に追加
-    sudo ldconfig
-    ldd /usr/local/bin/recpt1
+	ldd /usr/local/bin/recpt1	読めないライブラリを確認
+	sudo vi /etc/ld.so.conf		"/usr/local/lib"を末尾に追加
+	sudo ldconfig
+	ldd /usr/local/bin/recpt1
 
 cannot start b25 decorderが出た
 
@@ -184,5 +184,5 @@ pkgconfigにもパスを通す
 参考
 ----
 
-* http://d.hatena.ne.jp/kt_hiro/20130113/1358051168
-* http://memo.saitodev.com/home/linux_pt2/recpt1/
+* [PT3の設定(CentOS6)](http://d.hatena.ne.jp/kt_hiro/20130113/1358051168)
+* [recpt1のインストール](http://memo.saitodev.com/home/linux_pt2/recpt1/)

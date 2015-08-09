@@ -63,8 +63,8 @@ nat descripter masquerade static 1 1 ルータLAN側IP gre
 
 <h2 id="section-1">ファイヤウォール開通</h2>
 
-<pre><code>ip filter フィルタ番号a pass * ルータLAN側IP tcp * 1723
-ip filter フィルタ番号b pass * ルータLAN側IP gre * *
+<pre><code>ip filter フィルタ番号a pass \* ルータLAN側IP tcp \* 1723
+ip filter フィルタ番号b pass \* ルータLAN側IP gre \* \*
 
 pp select 1
 ip pp secure filter in …(フィルタ番号a,bを追加)
