@@ -1,10 +1,18 @@
+---
+layout: default
+title: Jekyllで日付に基づいたディレクトリを作らない
+permalink: jekyll-post-without-date
+---
+
+
 Jekyllで日付に基づいたディレクトリを作らない
-----
+====
 
 `_posts`ディレクトリに記事を入れるとき、ファイル名に`YYYY-MM-DD-なんとか-かんとか.md`の形式で日付を入れないといけない。
 ページのコンパイル時、この日付をもとに
 
-    _site
+
+    ＿site
      |-YYYY
        |-MM
          |-DD

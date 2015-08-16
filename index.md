@@ -1,6 +1,6 @@
 ---
 layout: default
-title: メモ置き場
+title: nibral.github.io
 ---
 
 nibral.github.io
