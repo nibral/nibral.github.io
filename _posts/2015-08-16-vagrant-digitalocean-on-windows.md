@@ -20,7 +20,7 @@ ConEmuの設定
 左下の`+`を押してタスクを追加し、`Commands`の欄にGit Bashの場所を書けばOK。
 このとき、引数に`--login -i`を渡すのと、パス全体をダブルクォートで囲むことに注意する。
 
-![](/assets/images/2015-08-16-vagrant-digitalocean-on-windows/gitbash.png)
+![](/assets/images/2015-08-16-vagrant-digitalocean-on-windows/gitbash.PNG)
 
 そのままだと日本語が化けるので、`vi ~/.bash_profile`で以下のエイリアスを追加する。
 
