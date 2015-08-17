@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<title>Windowsからvagrant-digitaloceanを使う</title>
+		<link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+	</head>
+	<body>
+		<h1 id="windowsvagrant-digitalocean">Windowsからvagrant-digitaloceanを使う</h1>
+
+<p>Digital Oceanのクーポンが余ってたので、Vagrantから使ってみる。
+ローカルに仮想環境を立てないのでVirtualBoxはインストール不要、
+持ち運ぶ端末が仮想化をサポートしない(Surface 3とか)場合も安心。</p>
+
+<h2 id="conemu">ConEmuの設定</h2>
+
+<p>今回は、UNIXのツール群が使える環境としてGit BashをConEmuから呼ぶことにする。</p>
+
+<p>まず、メニューの<code>Settings...</code>から<code>Startup</code>→<code>Tasks</code>を開く。
+左下の<code>+</code>を押してタスクを追加し、<code>Commands</code>の欄にGit Bashの場所を書けばOK。
+このとき、引数に<code>--login -i</code>を渡すのと、パス全体をダブルクォートで囲むことに注意する。
+<img src="/assets/images/2015-08-16-vagrant-digitalocean-on-windows/gitbash.PNG" alt="" /></p>
+
+<p>そのままだと日本語が化けるので、<code>vi ~/.bash_profile</code>で以下のエイリアスを追加する。</p>
+
+<pre><code>alias ls='ls --show-control-chars'
+</code></pre>
+
+<p>あと、Git Bashにはrsyncが入っていないので、<a href="http://hail2u.net/blog/software/install-rsync-to-git-for-windows.html">rsyncをGit for Windowsに混ぜる</a>を参考にMinGWのパッケージからexeとdllを持ってくる。
+<code>rsync --version</code>でバージョン情報が見られればOK。</p>
+
+<h2 id="vagrant-digitalocean">vagrant-digitaloceanのインストール</h2>
+
+<p>インストールはコマンド一発。</p>
+
+<pre><code>vagrant plugin install vagrant-digitalocean
+</code></pre>
+
+<p>Git Bash(=MSYS)環境の場合、インストールしただけだと<code>vagrant up</code>の途中でエラーが出て失敗する。
+これは、rsyncでDropletとの同期を設定する時のディレクトリ指定がCygwinスタイル(<code>/cygdrive/c/Users/...</code>)になっているため。
+ここを設定するオプションは(たぶん)ないので、ソースそのものを書き換えてMSYSスタイル(<code>/c/Users/...</code>)になるようにする。</p>
+
+<p>手順としては、同期を設定する処理が書かれているファイルを開き、</p>
+
+<pre><code>cd ~/.vagrant.d/gems/gems/vagrant-digitalocean-0.7.7/lib/vagrant-digitalocean/actions
+vi sync_folders.rb
+</code></pre>
+
+<p>37～40行目、ディレクトリ表記を変換している部分から、</p>
+
+<pre><code># on windows rsync.exe requires cygdrive-style paths
+if Vagrant::Util::Platform.windows?
+  hostpath = hostpath.gsub(/^(\w):/) { "/cygdrive/#{$1}" }
+end
+</code></pre>
+
+<p><code>/cygdrive</code>を消す。</p>
+
+<pre><code># on windows rsync.exe requires cygdrive-style paths
+if Vagrant::Util::Platform.windows?
+  hostpath = hostpath.gsub(/^(\w):/) { "/#{$1}" }
+end
+</code></pre>
+
+<h2 id="vagrantfile">Vagrantfileをつくる</h2>
+
+<p>必要なもの</p>
+
+<ul>
+  <li>Digital OceanのAPIトークン
+    <ul>
+      <li>Digital Oceanにログインして、上の「API」メニューからPersonal Access Tokenを発行できる</li>
+      <li>たぶんWRITE権限が必要</li>
+      <li>発行完了画面を閉じるとトークンそのものは確認できなくなるので、きちんとメモったことを確認してから閉じる</li>
+    </ul>
+  </li>
+  <li>SSH用の秘密鍵
+    <ul>
+      <li>ない場合は<code>ssh-keygen -t rsa</code>で生成できる</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Vagrant用のディレクトリをつくって、そこにVagrantfileを置く。</p>
+
+<pre><code>mkdir vagrant
+cd ./vagrant
+vi Vagrantfile
+</code></pre>
+
+<p>中身は<a href="https://github.com/smdahlen/vagrant-digitalocean">サンプル</a>を参考にする。
+変えるのは秘密鍵の場所とAPIトークンくらい。ディストリビューションとリージョンはお好みで。</p>
+
+<pre><code>Vagrant.configure('2') do |config|
+
+  config.vm.provider :digital_ocean do |provider, override|
+    override.ssh.private_key_path = '秘密鍵へのパス'
+    override.vm.box = 'digital_ocean'
+    override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+
+    provider.token = 'APIトークン'
+    provider.image = 'centos-7-0-x64'
+    provider.region = 'sgp1'
+    provider.size = '512mb'
+  end
+end
+</code></pre>
+
+<h2 id="section">起動</h2>
+
+<pre><code>vagrant up --provider=digital_ocean
+</code></pre>
+
+<p>SSHで入ってみる</p>
+
+<pre><code>vagrant ssh
+</code></pre>
+
+<h2 id="section-1">停止と削除</h2>
+
+<pre><code>vagrant halt
+vagrant destroy
+</code></pre>
+
+<p>destroy時に「本当に削除してもいいですか？」と聞いてくる。</p>
+
+	</body>
+<html>

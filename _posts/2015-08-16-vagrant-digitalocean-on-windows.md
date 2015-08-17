@@ -19,7 +19,6 @@ ConEmuの設定
 まず、メニューの`Settings...`から`Startup`→`Tasks`を開く。
 左下の`+`を押してタスクを追加し、`Commands`の欄にGit Bashの場所を書けばOK。
 このとき、引数に`--login -i`を渡すのと、パス全体をダブルクォートで囲むことに注意する。
-
 ![](/assets/images/2015-08-16-vagrant-digitalocean-on-windows/gitbash.PNG)
 
 そのままだと日本語が化けるので、`vi ~/.bash_profile`で以下のエイリアスを追加する。
@@ -66,11 +65,11 @@ Vagrantfileをつくる
 必要なもの
 
 * Digital OceanのAPIトークン
- + Digital Oceanにログインして、上の「API」メニューからPersonal Access Tokenを発行できる
- + たぶんWRITE権限が必要
- + 発行完了画面を閉じるとトークンそのものは確認できなくなるので、きちんとメモったことを確認してから閉じる
+    + Digital Oceanにログインして、上の「API」メニューからPersonal Access Tokenを発行できる
+    + たぶんWRITE権限が必要
+    + 発行完了画面を閉じるとトークンそのものは確認できなくなるので、きちんとメモったことを確認してから閉じる
 * SSH用の秘密鍵
- + ない場合は`ssh-keygen -t rsa`で生成できる
+    + ない場合は`ssh-keygen -t rsa`で生成できる
 
 Vagrant用のディレクトリをつくって、そこにVagrantfileを置く。
 
