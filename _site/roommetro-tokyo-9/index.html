@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<title>めとべや東京#9 メモ</title>
+		<link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+	</head>
+	<body>
+		<h1 id="section">めとべや東京#9 メモ</h1>
+
+<h2 id="uwp">UWPアプリケーション開発入門</h2>
+
+<ul>
+  <li>
+    <p><a href="https://docs.com/nishimura-makot/3022">当日の資料</a></p>
+  </li>
+  <li>UWP
+    <ul>
+      <li>Windows 10ならどこでもうごく</li>
+      <li>Desktop,Mobile,IoT,Holo Lens,Xbox,etc.</li>
+    </ul>
+  </li>
+  <li>WinRTとプラットフォームの構成が似てる
+    <ul>
+      <li>基本的にUniversal Windows Platformの上で走る</li>
+    </ul>
+  </li>
+  <li>Bridge for…
+    <ul>
+      <li>(iOS)Obj-CのコードをVSでビルドして実行できる、ただしストーリーボード非対応(?)</li>
+      <li>(Android)apkを提出して変換</li>
+      <li>(Web)</li>
+      <li>(Classic)WPFを変換</li>
+    </ul>
+  </li>
+  <li>UWPのメリット
+    <ul>
+      <li>ストア配布なので不特定多数に配りやすい</li>
+      <li>ライバル少ない(人気が…)</li>
+      <li>タッチ操作は作りやすい</li>
+    </ul>
+  </li>
+  <li>デメリット
+    <ul>
+      <li>限定配布は難しい</li>
+      <li>複雑なフォームは作りにくい</li>
+    </ul>
+  </li>
+  <li>Hello,world demo
+    <ul>
+      <li>イベントハンドラ作って動かす感じ</li>
+    </ul>
+  </li>
+  <li>まとめ
+    <ul>
+      <li>マルチプラットフォーム化が進むよ</li>
+      <li>Xamarinもらおうね</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="madosmawindows-10">MADOSMAのこれまでとこれから、とWindows 10</h2>
+
+<ul>
+  <li>冒頭</li>
+</ul>
+<blockquote class="twitter-tweet" lang="ja"><p lang="ja" dir="ltr">MCJ 平井さんセッション&#10;「Windows 10 を使っている方は…？」 &#10;8 割くらい手が挙がる&#10;「MADOSMA ご利用の方は…？」&#10;8 割くらい手が挙がる&#10;&#10;「異常ですねぇ」 <a href="https://twitter.com/hashtag/%E3%82%81%E3%81%A8%E3%81%B9%E3%82%84?src=hash">#めとべや</a></p>&mdash; ぐらばく (@Grabacr07) <a href="https://twitter.com/Grabacr07/status/634951582031855616">2015, 8月 22</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<ul>
+  <li>
+    <p>開発者以外、地方で意外に売れてる</p>
+  </li>
+  <li>Win10の動作はほぼOK
+    <ul>
+      <li>開発レベルではOTAでアップデートも実現されている</li>
+    </ul>
+  </li>
+  <li>
+    <p>今年Win10を出すとなると、MSM8909しか選択肢がない</p>
+  </li>
+  <li>MADOSMAの次
+    <ul>
+      <li>「性能はそのままでサイズを下げてほしい」という日本特有の要望</li>
+      <li>日本だけだと売れても10万台程度、ハードベンダーがやりたがらない</li>
+      <li>大画面の端末は進行中</li>
+    </ul>
+  </li>
+  <li>モバイルホットスポット
+    <ul>
+      <li>事前にPCとリンクしておくと、PC側からホットスポットを起動できる</li>
+    </ul>
+  </li>
+  <li>Windows 10のリカバリが優秀
+    <ul>
+      <li><code>scanstate.exe /apps /ppkg</code></li>
+      <li><code>apps.ppkg</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="windows-10-mobile">Windows 10 Mobile語り</h2>
+
+<ul>
+  <li>Windows Phone 7
+    <ul>
+      <li>IS12Tのつらい記憶</li>
+      <li>そもそもOSとして制限がキツすぎた</li>
+    </ul>
+  </li>
+  <li>Windows Phone 8 暗黒期
+    <ul>
+      <li>docomoが出さない</li>
+      <li>相変わらず地図が</li>
+    </ul>
+  </li>
+  <li>Windows Phone 8 黎明期
+    <ul>
+      <li>中華フォント問題は開発者側での対応が必要</li>
+    </ul>
+  </li>
+  <li>Windows 10 Mobile
+    <ul>
+      <li>地図がBingになってだいぶまともに</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="application-insightswindows-phone">Application Insightsでお手軽Windows Phoneアプリ監視</h2>
+
+<ul>
+  <li>自分の作ったアプリ監視したい
+    <ul>
+      <li>ガチな監視はいらない</li>
+      <li>自分で作るのはおいしくない</li>
+    </ul>
+  </li>
+  <li>Application Insights in Windows Azure
+    <ul>
+      <li>クラッシュ検出(キャッチされない例外で落ちた時は自動、キャッチした時はAPIから投げる)</li>
+      <li><code>Diagnostics.TelemetryClient</code></li>
+    </ul>
+  </li>
+  <li>どうやって使うか
+    <ul>
+      <li>VSに追加オプションあり</li>
+      <li>Azureポータルから手動で追加して、発行されたキーをconfigファイルに書いてもよい</li>
+    </ul>
+  </li>
+  <li>ユーザーとセッション
+    <ul>
+      <li>1端末1ユーザとして認識される</li>
+      <li>アプリを起動して終了するまでが1セッション</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="xaml1ms">未来XAMLの1msに泣かないために</h2>
+
+<ul>
+  <li>Core i7とSnapdragon 410
+    <ul>
+      <li>ベンチマーク的には6倍の性能差</li>
+      <li>ListViewの処理時間的には16倍</li>
+    </ul>
+  </li>
+  <li>VS2015のパフォーマンス測定
+    <ul>
+      <li>どこの処理に時間がかかってるのかが測れる(DiskI/O,Network,XAMLlayout)</li>
+    </ul>
+  </li>
+  <li>XAMLが遅い
+    <ul>
+      <li>パースとレンダリング</li>
+    </ul>
+  </li>
+  <li>速くするには
+    <ul>
+      <li>複雑なレイアウトを避ける、ネストは浅く</li>
+      <li>色指定などのパラメータを文字列で渡すとクラスへの変換が走るので遅くなる、Resource化も検討</li>
+      <li>Resourceにするときは、PageやUserContolのように毎回生成が走るところに置かない</li>
+      <li>デフォルト値でいいなら、そもそも引数を渡さないのもアリ</li>
+    </ul>
+  </li>
+  <li>Panelは並べ方で速度が変わる
+    <ul>
+      <li>複雑なGirdは遅い</li>
+      <li>Canvasは絶対座標でレンダリングされ、周囲に対する依存がないので高速</li>
+    </ul>
+  </li>
+  <li>Win8.x向けアプリをWin10で動かすときは地雷を踏むかも
+    <ul>
+      <li>Listview on ScrollViewer</li>
+    </ul>
+  </li>
+  <li>つねにパフォーマンスを意識する
+    <ul>
+      <li>XAMLが複雑になりすぎてないか</li>
+      <li>計測する</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="lt">LT</h2>
+
+<ul>
+  <li>Windows 10 IoT
+    <ul>
+      <li>焦電センサで人がいるか判断するやつ</li>
+    </ul>
+  </li>
+  <li>KanColleViewerプラグイン
+    <ul>
+      <li>NuGetからパッケージ入れて、IPluginとIToolを実装</li>
+    </ul>
+  </li>
+  <li>VisualStudio拡張機能
+    <ul>
+      <li>熊予測</li>
+      <li>エディタの背景に画像が！</li>
+    </ul>
+  </li>
+  <li>NotificationsExtentions on Win10
+    <ul>
+      <li>ライブタイルがサクッと</li>
+    </ul>
+  </li>
+  <li>Office</li>
+</ul>
+
+	</body>
+<html>
