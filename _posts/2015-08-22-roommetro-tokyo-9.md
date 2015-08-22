@@ -46,6 +46,7 @@ MADOSMAのこれまでとこれから、とWindows 10
 ----
 
 * 冒頭
+
 <blockquote class="twitter-tweet" lang="ja"><p lang="ja" dir="ltr">MCJ 平井さんセッション&#10;「Windows 10 を使っている方は…？」 &#10;8 割くらい手が挙がる&#10;「MADOSMA ご利用の方は…？」&#10;8 割くらい手が挙がる&#10;&#10;「異常ですねぇ」 <a href="https://twitter.com/hashtag/%E3%82%81%E3%81%A8%E3%81%B9%E3%82%84?src=hash">#めとべや</a></p>&mdash; ぐらばく (@Grabacr07) <a href="https://twitter.com/Grabacr07/status/634951582031855616">2015, 8月 22</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
@@ -108,6 +109,8 @@ Application Insightsでお手軽Windows Phoneアプリ監視
 
 未来XAMLの1msに泣かないために
 ----
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/jAYWgEuZErUCNK" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/shigure/xaml1ms" title="未来(あす)Xamlの1msに泣かないために" target="_blank">未来(あす)Xamlの1msに泣かないために</a> </strong> from <strong><a href="//www.slideshare.net/shigure" target="_blank">shigure</a></strong> </div>
 
 * Core i7とSnapdragon 410
 	+ ベンチマーク的には6倍の性能差
