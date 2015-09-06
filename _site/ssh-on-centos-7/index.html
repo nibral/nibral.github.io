@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<title>CentOS7でSSHを使う</title>
+		<link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+	</head>
+	<body>
+		<h1 id="centos7ssh">CentOS7でSSHを使う</h1>
+
+<p>CentOS7になって、iptablesがfirewalldになったりsystemctl使うようになったりしたので、6.x系から変わったところを中心に。</p>
+
+<h2 id="section">ユーザ関連</h2>
+
+<p>インストール中に一般ユーザを作成し、かつそのユーザでsudoコマンドを使いたい場合、インストール完了後に当該ユーザをwheelグループに追加する</p>
+
+<pre><code>gpasswd -a akari wheel
+</code></pre>
+
+<h2 id="firewalld">firewalld</h2>
+
+<p>結局、firewalldの設定はどこを見ているのか？</p>
+
+<ol>
+  <li>firewalldが立ち上がると、各NICに対して「ゾーン」が紐付けされる</li>
+  <li>ゾーンには「サービス」や「ポート」、「マスカレードの可否」といったルールが紐付けされている
+    <ul>
+      <li>このルールに従って、パケットを通したり捨てたりする</li>
+    </ul>
+  </li>
+  <li>サービスのルールはxmlファイルに保存されていて、必要に応じて編集できる
+    <ul>
+      <li>初期状態では、<code>/usr/lib/firewalld/services</code>に保存されているxmlファイルを参照している</li>
+      <li>ファイルを編集したいときは直接編集せず、<code>/etc/firewalld/services</code>にコピーして書き換える</li>
+    </ul>
+  </li>
+</ol>
+
+<p>sshdの標準ルール</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;service&gt;
+	&lt;short&gt;SSH&lt;/short&gt;
+	&lt;description&gt;略&lt;/description&gt;
+	&lt;port protocol="tcp" port="22"/&gt;
+&lt;/service&gt;
+</code></pre>
+
+<p>sshdのポートを変える場合</p>
+
+<pre><code>cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/ssh.xml
+vi /etc/firewalld/services/ssh.xml
+	&lt;port protocol="tcp" port="22"/&gt;
+	↓
+	&lt;port protocol="tcp" port="20022"/&gt;
+systemctl restart firewalld
+</code></pre>
+
+<p>ただ、手元の環境ではfirewalldの再起動がタイムアウトして失敗する。
+設定に問題があるか、サービス間の依存関係に見落としがあるか、単にマシンの性能が足りないか(Celeron N3050でHyper-Vは重い)。
+設定が終わったあとにrebootしたらちゃんと動いたのでよし。</p>
+
+<h2 id="selinux">SELinux</h2>
+
+<p>管理ツールのインストール</p>
+
+<pre><code>yum install policycoreutils-python
+</code></pre>
+
+<p>sshdが待ち受けるポートとしてTCPの10022番を追加</p>
+
+<pre><code>semanage port -a -t ssh_port_t -p tcp 10022
+</code></pre>
+
+<p>ちゃんと登録できたか確認</p>
+
+<pre><code>semanage port -l | grep ssh
+</code></pre>
+
+<h2 id="ssh">SSH</h2>
+
+<p>sshdの設定変更</p>
+
+<pre><code>vi /etc/ssh/sshd_config
+	Port 10022
+	PermitRootLogin no
+	PubkeyAuthentication yes
+	PasswordAuthentication yes
+	AuthorizedKeysFile .ssh/authorized_keys		
+</code></pre>
+
+<p>公開鍵認証に使うファイルのパーミッションに過不足があると<code>Permission denied</code>になるので注意</p>
+
+<ul>
+  <li>~/.sshは700</li>
+  <li>~/.ssh/authorized_keysは600</li>
+</ul>
+
+<p>sshd再起動</p>
+
+<pre><code>systemctl restart sshd.service
+systemctl status sshd.service
+</code></pre>
+
+<h2 id="section-1">その他</h2>
+
+<p>MSYSgitとWindowsのpingコマンドの相性が悪いのか、出力が中途半端なところで切れたりする</p>
+
+<p><img src="/assets/images/2015-09-06-ssh-on-centos-7/ping.png" alt="" /></p>
+
+<p>パケッ</p>
+
+	</body>
+<html>

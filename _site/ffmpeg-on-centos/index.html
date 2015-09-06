@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<title>ffmpeg on CentOS</title>
+		<link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+	</head>
+	<body>
+		<h1 id="ffmpeg-on-centos">ffmpeg on CentOS</h1>
+
+<h2 id="section">はじめに</h2>
+
+<p><a href="https://trac.ffmpeg.org/wiki/CompilationGuide/Centos">公式のインストールガイド</a>を参考に、余計なオプション入れてないffmpegをビルドしよう(x264とfdk_aac)</p>
+
+<h2 id="git">Git</h2>
+
+<p>yumのパッケージが古いので自分でビルドする</p>
+
+<p>git 依存関係の解決</p>
+
+<pre><code>sudo yum install curl-devel expat-devel gcc gettext-devel make openssl-devel zlib-devel perl-ExtUtils-MakeMaker
+</code></pre>
+
+<p>Gitのダウンロード</p>
+
+<pre><code>wget https://www.kernel.org/pub/software/scm/git/git-x.x.x.tar.gz
+</code></pre>
+
+<p>展開してビルド、インストール</p>
+
+<pre><code>tar -zxf git-x.x.x.tar.gz
+cd git-x.x.x
+make prefix=/usr/local all
+sudo make prefix=/usr/local install
+</code></pre>
+
+<h2 id="ffmpeg-">ffmpeg 依存関係の解決</h2>
+
+<pre><code>sudo yum install autoconf automake cmake freetype-devel gcc-c++ libtool nasm pkgconfig
+</code></pre>
+
+<p>変更点</p>
+
+<ul>
+  <li>gcc,make,zlib-devel…gitのビルドでインストール済</li>
+  <li>git…上でビルドしたものと競合</li>
+  <li>mercurial…libx265をダウンロードしないので不要</li>
+</ul>
+
+<h2 id="section-1">ビルド</h2>
+
+<p>ダウンロード用のディレクトリを切る</p>
+
+<pre><code>mkdir ffmpeg-source
+</code></pre>
+
+<p>yasm</p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 git://github.com/yasm/yasm.git
+cd yasm
+autoreconf -fiv
+./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin"
+make
+sudo make install
+make distclean
+</code></pre>
+
+<p>x264</p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 git://git.videolan.org/x264
+cd x264
+./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static
+make
+sudo make install
+make distclean
+</code></pre>
+
+<p>fdk_aac</p>
+
+<pre><code>cd ~/ffmpeg_sources
+git clone --depth 1 git://git.code.sf.net/p/opencore-amr/fdk-aac
+cd fdk-aac
+autoreconf -fiv
+./configure --prefix="$HOME/ffmpeg_build" --disable-shared
+make
+sudo make install
+make distclean
+</code></pre>
+
+<p>ffmpegビルド設定</p>
+
+<pre><code>PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" \
+./configure --prefix="$HOME/ffmpeg_build" \
+--extra-cflags="-I$HOME/ffmpeg_build/include" \
+--extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+--bindir="$HOME/bin" \
+--pkg-config-flags="--static" \
+--enable-gpl \
+--enable-nonfree \
+--enable-libfdk-aac \
+--enable-libx264
+</code></pre>
+
+<p>ビルド</p>
+
+<pre><code>make
+make install
+make distclean
+</code></pre>
+
+<p>shellのハッシュ更新</p>
+
+<pre><code>hash -r
+</code></pre>
+
+	</body>
+<html>
