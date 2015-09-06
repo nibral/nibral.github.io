@@ -44,7 +44,7 @@ sshdのポートを変える場合
 	vi /etc/firewalld/services/ssh.xml
 		<port protocol="tcp" port="22"/>
 		↓
-		<port protocol="tcp" port="20022"/>
+		<port protocol="tcp" port="10022"/>
 	systemctl restart firewalld
 
 ただ、手元の環境ではfirewalldの再起動がタイムアウトして失敗する。
