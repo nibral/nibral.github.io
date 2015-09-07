@@ -85,6 +85,12 @@ fdk_aac
     sudo make install
     make distclean
 
+ffmpegのダウンロードと展開
+
+    cd ~/ffmpeg_sources
+    git clone --depth 1 git://source.ffmpeg.org/ffmpeg
+    cd ffmpeg
+
 ffmpegビルド設定
 
     PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" \
