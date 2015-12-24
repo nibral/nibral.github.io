@@ -93,8 +93,6 @@ sshd再起動
 その他
 ----
 
-MSYSgitとWindowsのpingコマンドの相性が悪いのか、出力が中途半端なところで切れたりする
-
-![](/assets/images/2015-09-06-ssh-on-centos-7/ping.png)
-
+MSYSgitとWindowsのpingコマンドの相性が悪いのか、出力が中途半端なところで切れたりする  
+![](/assets/images/2015-09-06-ssh-on-centos-7/ping.png)  
 パケッ
