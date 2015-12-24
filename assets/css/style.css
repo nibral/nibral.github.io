@@ -3,6 +3,10 @@ body {
   margin: auto;
 }
 
+img {
+  margin: 20px 20px;
+}
+
 pre, code, var, samp, kbd, .mono {
     font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
     line-height: 1.4;
