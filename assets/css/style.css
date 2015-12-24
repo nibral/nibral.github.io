@@ -3,6 +3,10 @@ body {
   margin: auto;
 }
 
+li {
+  margin-bottom: 5px;
+}
+
 img {
   margin: 20px 0 20px 0;
 }
