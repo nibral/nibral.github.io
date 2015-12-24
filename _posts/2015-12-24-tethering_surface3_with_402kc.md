@@ -1,11 +1,13 @@
 ---
 layout: default
-title: Surface 3で402KCのBluetoothテザリングを使う
+title: Surface 3で402KCのBluetoothテザリングが使いたかった
 permalink: tethering_surface3_with_402kc
 ---
 
-Surface 3で402KCのBluetoothテザリングを使う
+Surface 3で402KCのBluetoothテザリング~~を使う~~が使いたかった
 ====
+
+**追記:外で使ってみましたが、非常に遅い上に不安定というどうしようもない挙動だったのでこの方法はお勧めしません。**
 
 注:Windows 8.1でのお話です
 
