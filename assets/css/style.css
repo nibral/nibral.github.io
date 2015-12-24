@@ -4,7 +4,7 @@ body {
 }
 
 img {
-  margin: 20px 20px;
+  margin: 20px 0 20px 0;
 }
 
 pre, code, var, samp, kbd, .mono {
