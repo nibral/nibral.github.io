@@ -1,13 +1,12 @@
 body {
     width: 800px;
-    margin: auto;
+    margin: auto;   /* centering content */
 }
 
 li {
     margin-bottom: 5px;
 }
-li:first-child {
-    /* this syntax doesn't work at IE (maybe) */
+li:first-child {    /* this syntax doesn't work at IE (maybe) */
     margin-top: 5px;
 }
 
