@@ -1,14 +1,18 @@
 body {
-  width: 800px;
-  margin: auto;
+    width: 800px;
+    margin: auto;
 }
 
 li {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
+}
+li:first-child {
+    /* this syntax doesn't work at IE (maybe) */
+    margin-top: 5px;
 }
 
 img {
-  margin: 20px 0 20px 0;
+    margin: 20px 0 20px 0;
 }
 
 pre, code, var, samp, kbd, .mono {
