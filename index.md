@@ -9,6 +9,7 @@ nibral.github.io
 * [Twitter](https://twitter.com/_nibral)
     + [技術メモ](http://twilog.org/_nibral/search?word=%E3%80%90%E3%83%A1%E3%83%A2%E3%80%91&ao=a)
 * [GitHub](https://github.com/nibral)
+* [Gist](https://gist.github.com/nibral)
 
 Posts
 ----
