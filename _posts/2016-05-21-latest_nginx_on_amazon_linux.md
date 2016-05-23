@@ -15,7 +15,29 @@ yumにnginxのリポジトリを追加して最新版をインストールする
 [Linux インスタンスの Amazon EC2 セキュリティグループ](http://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/using-network-security.html])
 を参照。
 
-* リポジトリの定義ファイルを作成
+* `amzn-main`リポジトリの`nginx`を無効化(exclude行を追加)
+
+```
+sudo vi /etc/yum.repos.d/amzn-main.repo 
+--------
+[amzn-main]
+name=amzn-main-Base
+mirrorlist=http://repo.$awsregion.$awsdomain/$releasever/main/mirror.list
+mirrorlist_expire=300
+metadata_expire=300
+priority=10
+failovermethod=priority
+fastestmirror_enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-ga
+enabled=1
+retries=5
+timeout=10
+report_instanceid=yes
+exclude=nginx
+```
+
+* `nginx`リポジトリの定義ファイルを作成
 
 ```
 sudo vi /etc/yum.repos.d/nginx.repo
@@ -27,10 +49,10 @@ gpgcheck=0
 enabled=1
 ```
 
-* nginxをインストール(`amzn-main`リポジトリ無効、`nginx`有効)
+* nginxをインストール
 
 ```
-sudo yum install --disablerepo=amzn-main --enablerepo=nginx nginx
+sudo yum install nginx
 ```
 
 * サービス起動、自動起動オン
