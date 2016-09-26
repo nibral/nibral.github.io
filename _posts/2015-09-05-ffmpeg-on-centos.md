@@ -104,6 +104,24 @@ ffmpegビルド設定
     --enable-libfdk-aac \
     --enable-libx264
 
+*staticなバイナリにする場合の設定*
+
+    PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig/" \
+    ./configure --prefix="$HOME/ffmpeg_build" \
+    --disable-ffserver \
+    --enable-version3 \
+    --arch=x86_64 \
+    --extra-cflags="-I$HOME/ffmpeg_build/include -static" \
+    --extra-ldflags="-L$HOME/ffmpeg_build/lib -static" \
+    --bindir="$HOME/bin" \
+    --pkg-config-flags="--static" \
+    --enable-gpl \
+    --enable-nonfree \
+    --enable-libfdk-aac \
+    --enable-libx264 \
+    --enable-static \
+    --disable-shared
+
 ビルド
 
     make
