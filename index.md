@@ -8,6 +8,7 @@ nibral.github.io
 
 * [GitHub](https://github.com/nibral)
 * [Gist](https://gist.github.com/nibral)
+* [Qiita](http://qiita.com/nibral)
 
 Posts
 ----
