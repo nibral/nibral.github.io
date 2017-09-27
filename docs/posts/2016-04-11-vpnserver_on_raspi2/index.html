@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='はじめに 購入直後にひとしきり遊んで放置されていたRasberry Pi 2 Model Bを発見したので、
+ 公衆無線LAN利用時のセキュリティ向上 自宅NASへのアクセス  を目的としてVPNサーバを立てた。VPNソフトウェアはSoftEther VPN。 また、
+ 接続するLANでDHCPが提供されている 作業はすべてSSH経由で行い、USBキーボードとマウスを使わない(適当なHDMI対応モニタがなかったので) SoftEther VPNの設定は、別のWindowsマシンから「SoftEther VPN サーバ管理マネージャ」を使って行う  ものとする。
+やるべきこと  OSのインストール Raspbianのセットアップ ネットワーク設定 SoftEther VPNのインストール  OSのインストールと初期セットアップ まず、Raspberry Pi公式のRaspbianダウンロードページから OSイメージをダウンロードする。Raspbianには通常版とLite版があるが、Lite版でインストールされないパッケージに 依存するソフトウェアがあると面倒なので今回は通常版を選択。
+zipを展開して2016-03-18-raspbian-jessie.imgを手に入れたら、それをmicroSDに書き込む。 今回はLinuxマシンで作業したので、ddコマンドを使う。 コマンドは公式のインストールガイドそのまま。 (of=で示される書き込み先は環境により異なるので、先にdf -hでmicroSDのデバイス名を確認しておく)
+dd bs=4M if=2016-03-18-raspbian-jessie.img of=/dev/sdb  書き込みが終わったら、syncを実行してからmicroSDを取り出す。
+Raspbianのセットアップ OSイメージを書き込んだmicroSDをRasPiに差し込み、LANケーブルと電源を接続する。 DHCP環境であれば、数分もするとIPが割り当てられてSSHでアクセスできるようになる。 本来はRasPiに割り当てられたIPを探すために必要があるが、今回はルータでIPの割り当てが確認できたので不要だった。 IPがわかったらSSHで接続し(ユーザ名pi、パスワードraspberry)、Raspberry Piの設定を行う。
+raspi-config  少なくとも、「1. Expand Filesystem」の実行と「4. i18n Options」のロケールとタイムゾーン設定は必須。 終わったら一旦再起動し、続いて各種アップグレードを済ませる。
+apt-get update apt-get upgrade rpi-update  ファームウェアの更新が行われるためここでも再起動。
+ネットワーク設定 サーバとして動作させる関係上、RasPiのIPは固定値が望ましい。通常はサーバ側に固定IPを設定するが、RasPiでは Zeroconfの実装であるavahi-daemonが 標準で動作していて、DHCPで割り当てられたIPに対してraspberrypi.'>
+
+<meta property='og:title' content='Raspberry Pi 2をVPNサーバに仕立てる • nibral'>
+<meta property='og:description' content='はじめに 購入直後にひとしきり遊んで放置されていたRasberry Pi 2 Model Bを発見したので、
+ 公衆無線LAN利用時のセキュリティ向上 自宅NASへのアクセス  を目的としてVPNサーバを立てた。VPNソフトウェアはSoftEther VPN。 また、
+ 接続するLANでDHCPが提供されている 作業はすべてSSH経由で行い、USBキーボードとマウスを使わない(適当なHDMI対応モニタがなかったので) SoftEther VPNの設定は、別のWindowsマシンから「SoftEther VPN サーバ管理マネージャ」を使って行う  ものとする。
+やるべきこと  OSのインストール Raspbianのセットアップ ネットワーク設定 SoftEther VPNのインストール  OSのインストールと初期セットアップ まず、Raspberry Pi公式のRaspbianダウンロードページから OSイメージをダウンロードする。Raspbianには通常版とLite版があるが、Lite版でインストールされないパッケージに 依存するソフトウェアがあると面倒なので今回は通常版を選択。
+zipを展開して2016-03-18-raspbian-jessie.imgを手に入れたら、それをmicroSDに書き込む。 今回はLinuxマシンで作業したので、ddコマンドを使う。 コマンドは公式のインストールガイドそのまま。 (of=で示される書き込み先は環境により異なるので、先にdf -hでmicroSDのデバイス名を確認しておく)
+dd bs=4M if=2016-03-18-raspbian-jessie.img of=/dev/sdb  書き込みが終わったら、syncを実行してからmicroSDを取り出す。
+Raspbianのセットアップ OSイメージを書き込んだmicroSDをRasPiに差し込み、LANケーブルと電源を接続する。 DHCP環境であれば、数分もするとIPが割り当てられてSSHでアクセスできるようになる。 本来はRasPiに割り当てられたIPを探すために必要があるが、今回はルータでIPの割り当てが確認できたので不要だった。 IPがわかったらSSHで接続し(ユーザ名pi、パスワードraspberry)、Raspberry Piの設定を行う。
+raspi-config  少なくとも、「1. Expand Filesystem」の実行と「4. i18n Options」のロケールとタイムゾーン設定は必須。 終わったら一旦再起動し、続いて各種アップグレードを済ませる。
+apt-get update apt-get upgrade rpi-update  ファームウェアの更新が行われるためここでも再起動。
+ネットワーク設定 サーバとして動作させる関係上、RasPiのIPは固定値が望ましい。通常はサーバ側に固定IPを設定するが、RasPiでは Zeroconfの実装であるavahi-daemonが 標準で動作していて、DHCPで割り当てられたIPに対してraspberrypi.'>
+<meta property='og:url' content='http://nibral.github.io/posts/2016-04-11-vpnserver_on_raspi2/'>
+<meta property='og:site_name' content='nibral.github.io'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2016-04-11T12:00:00&#43;09:00'/><meta property='article:modified_time' content='2016-04-11T12:00:00&#43;09:00'/>
+
+<meta name="generator" content="Hugo 0.29" />
+
+  <title>Raspberry Pi 2をVPNサーバに仕立てる • nibral</title>
+  <link rel='canonical' href='http://nibral.github.io/posts/2016-04-11-vpnserver_on_raspi2/'>
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700&subset=latin'>
+<link rel='stylesheet' href='/css/main.67a788c9.css'>
+
+  <link rel='stylesheet' href='/css/custom.css'>
+
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+
+
+</head>
+
+
+<body class='page'>
+  <div class='site'>
+    <header id='header' class='header-container'>
+      <div class='site-header'>
+        <nav id='navmenu' aria-label='Main Menu'>
+  <ul class='main-menu'>
+    
+    <li>
+      <a href='/' 
+        
+      >Home</a>
+    </li>
+    
+    <li>
+      <a href='/posts/' 
+        
+      >Tech Note</a>
+    </li>
+    
+  </ul>
+</nav>
+
+        <div class='site-info'>
+          
+          <p class='site-title title'>nibral.github.io</p>
+          
+          <p class='site-description'>Hello.</p>
+        </div>
+      </div>
+    </header>
+
+
+<main class='main'>
+  <article lang='en' class='entry'>
+    <header class='entry-header'>
+  <div class='entry-info'>
+    <h1 class='entry-title title'>Raspberry Pi 2をVPNサーバに仕立てる</h1>
+    
+  </div>
+  
+<div class='meta'>
+  <span class='posted-on'>
+    <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+
+    <span class='screen-reader'>Posted on </span>
+    <time class='date' datetime='2016-04-11T12:00:00&#43;09:00'>2016/04/11</time>
+  </span>
+  
+  <span class='byline'>
+    <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+
+    <span class='screen-reader'> by </span>
+    nibral
+  </span>
+  
+  
+</div>
+
+
+</header>
+
+    <div class='entry-content'>
+  
+
+<h2 id="はじめに">はじめに</h2>
+
+<p>購入直後にひとしきり遊んで放置されていたRasberry Pi 2 Model Bを発見したので、</p>
+
+<ul>
+<li>公衆無線LAN利用時のセキュリティ向上</li>
+<li>自宅NASへのアクセス</li>
+</ul>
+
+<p>を目的としてVPNサーバを立てた。VPNソフトウェアは<a href="https://ja.softether.org/">SoftEther VPN</a>。
+また、</p>
+
+<ul>
+<li>接続するLANでDHCPが提供されている</li>
+<li>作業はすべてSSH経由で行い、USBキーボードとマウスを使わない(適当なHDMI対応モニタがなかったので)</li>
+<li>SoftEther VPNの設定は、別のWindowsマシンから「SoftEther VPN サーバ管理マネージャ」を使って行う</li>
+</ul>
+
+<p>ものとする。</p>
+
+<h2 id="やるべきこと">やるべきこと</h2>
+
+<ul>
+<li>OSのインストール</li>
+<li>Raspbianのセットアップ</li>
+<li>ネットワーク設定</li>
+<li>SoftEther VPNのインストール</li>
+</ul>
+
+<h2 id="osのインストールと初期セットアップ">OSのインストールと初期セットアップ</h2>
+
+<p>まず、<a href="https://www.raspberrypi.org/downloads/raspbian/">Raspberry Pi公式のRaspbianダウンロードページ</a>から
+OSイメージをダウンロードする。Raspbianには通常版とLite版があるが、Lite版でインストールされないパッケージに
+依存するソフトウェアがあると面倒なので今回は通常版を選択。</p>
+
+<p>zipを展開して<code>2016-03-18-raspbian-jessie.img</code>を手に入れたら、それをmicroSDに書き込む。
+今回はLinuxマシンで作業したので、<code>dd</code>コマンドを使う。
+コマンドは<a href="https://www.raspberrypi.org/documentation/installation/installing-images/linux.md">公式のインストールガイド</a>そのまま。
+(<code>of=</code>で示される書き込み先は環境により異なるので、先に<code>df -h</code>でmicroSDのデバイス名を確認しておく)</p>
+
+<pre><code>dd bs=4M if=2016-03-18-raspbian-jessie.img of=/dev/sdb
+</code></pre>
+
+<p>書き込みが終わったら、<code>sync</code>を実行してからmicroSDを取り出す。</p>
+
+<h2 id="raspbianのセットアップ">Raspbianのセットアップ</h2>
+
+<p>OSイメージを書き込んだmicroSDをRasPiに差し込み、LANケーブルと電源を接続する。
+DHCP環境であれば、数分もするとIPが割り当てられてSSHでアクセスできるようになる。
+本来はRasPiに割り当てられたIPを探すために必要があるが、今回はルータでIPの割り当てが確認できたので不要だった。
+<img src="/images/2016-04-11_vpnserver_on_RasPi2/netmap.jpg" alt="" /></p>
+
+<p>IPがわかったらSSHで接続し(ユーザ名pi、パスワードraspberry)、Raspberry Piの設定を行う。</p>
+
+<pre><code>raspi-config
+</code></pre>
+
+<p>少なくとも、「1. Expand Filesystem」の実行と「4. i18n Options」のロケールとタイムゾーン設定は必須。
+終わったら一旦再起動し、続いて各種アップグレードを済ませる。</p>
+
+<pre><code>apt-get update
+apt-get upgrade
+rpi-update
+</code></pre>
+
+<p>ファームウェアの更新が行われるためここでも再起動。</p>
+
+<h2 id="ネットワーク設定">ネットワーク設定</h2>
+
+<p>サーバとして動作させる関係上、RasPiのIPは固定値が望ましい。通常はサーバ側に固定IPを設定するが、RasPiでは
+<a href="https://ja.wikipedia.org/wiki/Zeroconf">Zeroconf</a>の実装である<code>avahi-daemon</code>が
+標準で動作していて、DHCPで割り当てられたIPに対して<code>raspberrypi.local</code>で名前解決ができるようになっている。
+今回はこの<code>avahi-daemon</code>を活かすため、ルータ側でRasPi(の有線NIC)のMACアドレスに対して
+割り当てるIPを固定した。
+<img src="/images/2016-04-11_vpnserver_on_RasPi2/dhcp.jpg" alt="" /></p>
+
+<p>補足…Windows10からはmDNSが実装されて<code>.local</code>の名前解決ができるようなのだが
+(<a href="http://virtnote.blogspot.jp/2015/06/windows-10-and-bonjour.html">仮想化雑記帳: Windows and Bonjour</a>)、
+手元の環境ではWindows 10 -&gt; RasPiの名前解決ができなかった。RasPi -&gt; Windows 10の名前解決はできるので、
+ファイアウォールの設定等を見直す必要があるかもしれない。</p>
+
+<p>RasPiのIPが固定できたら、WAN側からのVPN通信をそのIPに流すように設定する(ポート開放)。
+今回利用するLT2P/IPsecでは、UDPの500番と4500番ポートを開ければよい。
+<img src="/images/2016-04-11_vpnserver_on_RasPi2/napt.jpg" alt="" /></p>
+
+<h2 id="softether-vpnのインストール">SoftEther VPNのインストール</h2>
+
+<p>適当なマシンで<a href="http://softether-download.com/ja.aspx">SoftEtherダウンロードセンター</a>に行き、
+SoftEther VPNの入った<code>tar.gz</code>ファイルのURLを確認する。</p>
+
+<ul>
+<li>コンポーネント:SoftEther VPN Server</li>
+<li>プラットフォーム: Linux</li>
+<li>CPU: ARM EABI (32bit)</li>
+</ul>
+
+<p>URLを確認したら、RasPiへダウンロード。</p>
+
+<pre><code>wget http://jp.softether-download.com/&lt;中略&gt;/softether-vpnserver-v4.19-9605-beta-2016.03.06-linux-arm_eabi-32bit.tar.gz
+</code></pre>
+
+<p>あとは公式ドキュメントの<a href="https://ja.softether.org/4-docs/1-manual/7/7.3">7.3 Linux へのインストールと初期設定</a>に
+したがってファイルを展開し、ビルドし、適切な場所に配置し、動作チェックを行ってデーモンとして登録すればよい。
+ただし、Raspbianはsystemdを採用しているので、「7.3.8 スタートアップスクリプトへの登録」はスキップして
+<a href="http://blog.204504byse.info/wiki.cgi?page=Systemd%CD%D1SoftEther%C0%DF%C4%EA%A5%D5%A5%A1%A5%A4%A5%EB">Systemd用SoftEther設定ファイル</a>
+に従う。</p>
+
+<p><code>vpncmd</code>によるチェックでエラーが出なければ、この時点でVPNサーバが稼働している。
+あとは別のWindowsマシンに「SoftEther VPN サーバ管理マネージャ」をインストールし、指示に従って
+初期設定を行う。L2TP/IPsecによるアクセスを有効にすることと、DDNSの設定を行うことを忘れないように。</p>
+
+<h2 id="追記">追記</h2>
+
+<p>RasPi内臓の有線LANインターフェース(eth0)にSoftether VPNの仮想HUBをブリッジすると、
+Liunx側の制約でVPNサーバが提供する他のサービス(httpサーバ等)にVPNクライアントからアクセス出来ない。</p>
+
+<blockquote>
+<p>Linuxオペレーティングシステム内部での制限事項により、VPN側(仮想HUB側)からローカルブリッジしている
+LANカードに割り当てられるIPアドレスに対して通信を行うことはできません。この制限はSoftEtherVPNが原因ではなく、
+Linuxの内部構造に原因があります。もしVPN側(仮想HUB側)からLinuxでローカルブリッジに使用している
+コンピュータ本体と、何らかの通信を行いたい場合(たとえばVPN Server/VPN BridgeサービスとHTTPサーバー
+サービスを両方動作させており、VPN側からもサーバーサービスにアクセスさせたい場合)は、ローカルブリッジ用の
+LAN カードを用意して接続し、そのLANカードと既存のLANカードの両方を物理的に同じセグメントに接続してください
+(<a href="https://ja.softether.org/4-docs/1-manual/3/3.6">3.6.11 Linux, FreeBSD, Solaris, Mac OS X オペレーティングシステムで「ローカルブリッジ機能」を使用する場合の注意事項</a>)</p>
+</blockquote>
+
+<p>この問題を解決するためには、以下の2つの方法がある。</p>
+
+<ol>
+<li>USB-Ethernetアダプタ(eth1)を増設して仮想HUBのブリッジ専用にする
+
+<ul>
+<li>VPN以外のサービスにはeth1→eth0という形で一回外に出て戻ってくる経路になる</li>
+<li>シンプルだが、IPを2つ専有する上にアダプタとケーブルが邪魔</li>
+</ul></li>
+<li>VPN用の仮想インターフェース(tap)を作成し、ブリッジインターフェース(br0)を介して外部及びeth0と接続する
+
+<ul>
+<li>eth0のIPをbr0に移し、eth0はbr0へOS内部で接続する</li>
+<li>tapデバイスはサーバ管理マネージャの「ローカルブリッジ設定」で名前を指定して作成できる</li>
+</ul></li>
+</ol>
+
+<p><code>systemd-networkd</code>環境下で方法2を用いる場合の手順は以下のとおり。
+<em>リモートで作業する場合、設定をミスるとIPの割り当てられているインターフェースが一つもない状態になって詰むので、</em>
+<em>一時的にUSB-Ethernetアダプタを接続などして回線を確保しておくほうが安全。</em></p>
+
+<ul>
+<li>ブリッジインターフェースの作成</li>
+</ul>
+
+<pre><code>/etc/systemd/network/br0.netdev
+</code></pre>
+
+<pre><code>[NetDev]
+Name=br0
+Kind=bridge
+</code></pre>
+
+<ul>
+<li>ブリッジのプロファイルを作成</li>
+</ul>
+
+<pre><code>/etc/systemd/network/br0.interface
+</code></pre>
+
+<pre><code>[Match]
+Name=br0
+
+[Network]
+DHCP=ipv4
+</code></pre>
+
+<ul>
+<li>eth0をブリッジに接続</li>
+</ul>
+
+<pre><code>/etc/systemd/network/eth0.interface
+</code></pre>
+
+<pre><code>[Match]
+Name=eth0
+
+[Network]
+Bridge=br0
+</code></pre>
+
+<ul>
+<li><code>systemd-networkd</code>の再起動</li>
+</ul>
+
+<pre><code>sudo systemctl restart systemd-networkd.service
+</code></pre>
+
+<ul>
+<li><code>vpnserver</code>のスタートアップスクリプトを修正して再起動</li>
+</ul>
+
+<pre><code>[Unit]
+Description=SoftEther VPN Server
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/vpnserver/vpnserver start
+ExecStop=/usr/local/vpnserver/vpnserver stop
+
+# 追記(tap_vpnの部分は管理マネージャで指定した名前に合わせる)
+ExecStartPost=/bin/sleep 5 ; /sbin/brctl addif br0 tap_vpn
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl stop vpnserver
+sudo systemctl start vpnserver
+</code></pre>
+
+</div>
+
+    
+<footer class='entry-footer'>
+  
+    
+  
+    
+  
+</footer>
+
+
+  </article>
+
+  
+
+  
+    <div class='comments-container'>
+  
+</div>
+
+  
+</main>
+
+    <footer id='footer' class='footer-container'>
+      <div class='footer'>
+        <div class='social'>
+  <nav aria-label='Social Menu'>
+    <ul class='social-menu'><li>
+        <a href='https://github.com/nibral' target='_blank' rel='noopener'>
+          <span class='screen-reader'>Open Github account in new tab</span>
+          
+            <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+
+          
+        </a>
+      </li><li>
+        <a href='https://qiita.com/nibral' target='_blank' rel='noopener'>
+          <span class='screen-reader'>Open Qiita account in new tab</span>
+          
+          <span class="fa-stack" style="color:#4cb10d; font-size: 60%;">
+              <i class="fa fa-square fa-stack-2x"></i>
+              <i class="fa fa-search fa-stack-1x fa-inverse fa-2x"></i>
+          </span>
+          
+        </a>
+      </li><li>
+        <a href='https://twitter.com/_nibral' target='_blank' rel='noopener'>
+          <span class='screen-reader'>Open Twitter account in new tab</span>
+          
+            <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+
+          
+        </a>
+      </li></ul>
+  </nav>
+</div>
+
+        <div class='copyright'>
+          <p>
+    
+      
+    
+  
+  &copy; 2015-2017 nibral</p>
+
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src='/js/main.af838dd5.js'></script>
+  
+    <script src='/js/custom.js'></script>
+  
+
+</body>
+
+</html>
+

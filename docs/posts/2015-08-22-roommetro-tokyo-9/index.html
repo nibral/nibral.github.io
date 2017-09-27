@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='UWPアプリケーション開発入門  当日の資料
+ UWP
+ Windows 10ならどこでもうごく Desktop,Mobile,IoT,Holo Lens,Xbox,etc.  WinRTとプラットフォームの構成が似てる
+ 基本的にUniversal Windows Platformの上で走る  Bridge for&hellip;
+ (iOS)Obj-CのコードをVSでビルドして実行できる、ただしストーリーボード非対応(?) (Android)apkを提出して変換 (Web) (Classic)WPFを変換  UWPのメリット
+ ストア配布なので不特定多数に配りやすい ライバル少ない(人気が…) タッチ操作は作りやすい  デメリット
+ 限定配布は難しい 複雑なフォームは作りにくい  Hello,world demo
+ イベントハンドラ作って動かす感じ  まとめ
+ マルチプラットフォーム化が進むよ Xamarinもらおうね   MADOSMAのこれまでとこれから、とWindows 10  冒頭  MCJ 平井さんセッション&#10;「Windows 10 を使っている方は…？」 &#10;8 割くらい手が挙がる&#10;「MADOSMA ご利用の方は…？」&#10;8 割くらい手が挙がる&#10;&#10;「異常ですねぇ」 #めとべや
+&mdash; ぐらばく (@Grabacr07) 2015, 8月 22 
+ 開発者以外、地方で意外に売れてる'>
+
+<meta property='og:title' content='めとべや東京#9 メモ • nibral'>
+<meta property='og:description' content='UWPアプリケーション開発入門  当日の資料
+ UWP
+ Windows 10ならどこでもうごく Desktop,Mobile,IoT,Holo Lens,Xbox,etc.  WinRTとプラットフォームの構成が似てる
+ 基本的にUniversal Windows Platformの上で走る  Bridge for&hellip;
+ (iOS)Obj-CのコードをVSでビルドして実行できる、ただしストーリーボード非対応(?) (Android)apkを提出して変換 (Web) (Classic)WPFを変換  UWPのメリット
+ ストア配布なので不特定多数に配りやすい ライバル少ない(人気が…) タッチ操作は作りやすい  デメリット
+ 限定配布は難しい 複雑なフォームは作りにくい  Hello,world demo
+ イベントハンドラ作って動かす感じ  まとめ
+ マルチプラットフォーム化が進むよ Xamarinもらおうね   MADOSMAのこれまでとこれから、とWindows 10  冒頭  MCJ 平井さんセッション&#10;「Windows 10 を使っている方は…？」 &#10;8 割くらい手が挙がる&#10;「MADOSMA ご利用の方は…？」&#10;8 割くらい手が挙がる&#10;&#10;「異常ですねぇ」 #めとべや
+&mdash; ぐらばく (@Grabacr07) 2015, 8月 22 
+ 開発者以外、地方で意外に売れてる'>
+<meta property='og:url' content='http://nibral.github.io/posts/2015-08-22-roommetro-tokyo-9/'>
+<meta property='og:site_name' content='nibral.github.io'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2015-08-22T12:00:00&#43;09:00'/><meta property='article:modified_time' content='2015-08-22T12:00:00&#43;09:00'/>
+
+<meta name="generator" content="Hugo 0.29" />
+
+  <title>めとべや東京#9 メモ • nibral</title>
+  <link rel='canonical' href='http://nibral.github.io/posts/2015-08-22-roommetro-tokyo-9/'>
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700&subset=latin'>
+<link rel='stylesheet' href='/css/main.67a788c9.css'>
+
+  <link rel='stylesheet' href='/css/custom.css'>
+
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+
+
+</head>
+
+
+<body class='page'>
+  <div class='site'>
+    <header id='header' class='header-container'>
+      <div class='site-header'>
+        <nav id='navmenu' aria-label='Main Menu'>
+  <ul class='main-menu'>
+    
+    <li>
+      <a href='/' 
+        
+      >Home</a>
+    </li>
+    
+    <li>
+      <a href='/posts/' 
+        
+      >Tech Note</a>
+    </li>
+    
+  </ul>
+</nav>
+
+        <div class='site-info'>
+          
+          <p class='site-title title'>nibral.github.io</p>
+          
+          <p class='site-description'>Hello.</p>
+        </div>
+      </div>
+    </header>
+
+
+<main class='main'>
+  <article lang='en' class='entry'>
+    <header class='entry-header'>
+  <div class='entry-info'>
+    <h1 class='entry-title title'>めとべや東京#9 メモ</h1>
+    
+  </div>
+  
+<div class='meta'>
+  <span class='posted-on'>
+    <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+
+    <span class='screen-reader'>Posted on </span>
+    <time class='date' datetime='2015-08-22T12:00:00&#43;09:00'>2015/08/22</time>
+  </span>
+  
+  <span class='byline'>
+    <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+
+    <span class='screen-reader'> by </span>
+    nibral
+  </span>
+  
+  
+</div>
+
+
+</header>
+
+    <div class='entry-content'>
+  
+
+<h2 id="uwpアプリケーション開発入門">UWPアプリケーション開発入門</h2>
+
+<ul>
+<li><p><a href="https://docs.com/nishimura-makot/3022">当日の資料</a></p></li>
+
+<li><p>UWP</p>
+
+<ul>
+<li>Windows 10ならどこでもうごく</li>
+<li>Desktop,Mobile,IoT,Holo Lens,Xbox,etc.</li>
+</ul></li>
+
+<li><p>WinRTとプラットフォームの構成が似てる</p>
+
+<ul>
+<li>基本的にUniversal Windows Platformの上で走る</li>
+</ul></li>
+
+<li><p>Bridge for&hellip;</p>
+
+<ul>
+<li>(iOS)Obj-CのコードをVSでビルドして実行できる、ただしストーリーボード非対応(?)</li>
+<li>(Android)apkを提出して変換</li>
+<li>(Web)</li>
+<li>(Classic)WPFを変換</li>
+</ul></li>
+
+<li><p>UWPのメリット</p>
+
+<ul>
+<li>ストア配布なので不特定多数に配りやすい</li>
+<li>ライバル少ない(人気が…)</li>
+<li>タッチ操作は作りやすい</li>
+</ul></li>
+
+<li><p>デメリット</p>
+
+<ul>
+<li>限定配布は難しい</li>
+<li>複雑なフォームは作りにくい</li>
+</ul></li>
+
+<li><p>Hello,world demo</p>
+
+<ul>
+<li>イベントハンドラ作って動かす感じ</li>
+</ul></li>
+
+<li><p>まとめ</p>
+
+<ul>
+<li>マルチプラットフォーム化が進むよ</li>
+<li>Xamarinもらおうね</li>
+</ul></li>
+</ul>
+
+<h2 id="madosmaのこれまでとこれから-とwindows-10">MADOSMAのこれまでとこれから、とWindows 10</h2>
+
+<ul>
+<li>冒頭</li>
+</ul>
+
+<p><blockquote class="twitter-tweet" lang="ja"><p lang="ja" dir="ltr">MCJ 平井さんセッション&#10;「Windows 10 を使っている方は…？」 &#10;8 割くらい手が挙がる&#10;「MADOSMA ご利用の方は…？」&#10;8 割くらい手が挙がる&#10;&#10;「異常ですねぇ」 <a href="https://twitter.com/hashtag/%E3%82%81%E3%81%A8%E3%81%B9%E3%82%84?src=hash">#めとべや</a></p>&mdash; ぐらばく (@Grabacr07) <a href="https://twitter.com/Grabacr07/status/634951582031855616">2015, 8月 22</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<ul>
+<li><p>開発者以外、地方で意外に売れてる</p></li>
+
+<li><p>Win10の動作はほぼOK</p>
+
+<ul>
+<li>開発レベルではOTAでアップデートも実現されている</li>
+</ul></li>
+
+<li><p>今年Win10を出すとなると、MSM8909しか選択肢がない</p>
+
+<ul>
+<li>性能0.7倍!=コスト0.7倍</li>
+</ul></li>
+
+<li><p>MADOSMAの次</p>
+
+<ul>
+<li>「性能はそのままでサイズを下げてほしい」という日本特有の要望</li>
+<li>日本だけだと売れても10万台程度、ハードベンダーがやりたがらない</li>
+<li>大画面の端末は進行中</li>
+</ul></li>
+
+<li><p>モバイルホットスポット</p>
+
+<ul>
+<li>事前にPCとリンクしておくと、PC側からホットスポットを起動できる</li>
+</ul></li>
+
+<li><p>Windows 10のリカバリが優秀</p>
+
+<ul>
+<li><code>scanstate.exe /apps /ppkg</code></li>
+<li><code>apps.ppkg</code></li>
+</ul></li>
+
+<li><p>開発段階でお蔵入りになった端末</p>
+
+<ul>
+<li>4.7インチで100g切り</li>
+<li>あまりの軽さにモックと勘違いする人続出</li>
+<li>技適等も通っていたが、Band19の掴みが悪く(アンテナサイズの都合?)販売には至らず</li>
+</ul></li>
+</ul>
+
+<h2 id="windows-10-mobile語り">Windows 10 Mobile語り</h2>
+
+<ul>
+<li><p>Windows Phone 7</p>
+
+<ul>
+<li>IS12Tのつらい記憶</li>
+<li>そもそもOSとして制限がキツすぎた</li>
+</ul></li>
+
+<li><p>Windows Phone 8 暗黒期</p>
+
+<ul>
+<li>docomoが出さない</li>
+<li>相変わらず地図が</li>
+</ul></li>
+
+<li><p>Windows Phone 8 黎明期</p>
+
+<ul>
+<li>中華フォント問題は開発者側での対応が必要</li>
+</ul></li>
+
+<li><p>Windows 10 Mobile</p>
+
+<ul>
+<li>地図がBingになってだいぶまともに</li>
+</ul></li>
+</ul>
+
+<h2 id="application-insightsでお手軽windows-phoneアプリ監視">Application Insightsでお手軽Windows Phoneアプリ監視</h2>
+
+<ul>
+<li><p>自分の作ったアプリ監視したい</p>
+
+<ul>
+<li>ガチな監視はいらない</li>
+<li>自分で作るのはおいしくない</li>
+</ul></li>
+
+<li><p>Application Insights in Windows Azure</p>
+
+<ul>
+<li>クラッシュ検出(キャッチされない例外で落ちた時は自動、キャッチした時はAPIから投げる)</li>
+<li><code>Diagnostics.TelemetryClient</code></li>
+</ul></li>
+
+<li><p>どうやって使うか</p>
+
+<ul>
+<li>VSに追加オプションあり</li>
+<li>Azureポータルから手動で追加して、発行されたキーをconfigファイルに書いてもよい</li>
+</ul></li>
+
+<li><p>ユーザーとセッション</p>
+
+<ul>
+<li>1端末1ユーザとして認識される</li>
+<li>アプリを起動して終了するまでが1セッション</li>
+</ul></li>
+</ul>
+
+<h2 id="未来xamlの1msに泣かないために">未来XAMLの1msに泣かないために</h2>
+
+<p><iframe src="//www.slideshare.net/slideshow/embed_code/key/jAYWgEuZErUCNK" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/shigure/xaml1ms" title="未来(あす)Xamlの1msに泣かないために" target="_blank">未来(あす)Xamlの1msに泣かないために</a> </strong> from <strong><a href="//www.slideshare.net/shigure" target="_blank">shigure</a></strong> </div></p>
+
+<ul>
+<li><p>Core i7とSnapdragon 410</p>
+
+<ul>
+<li>ベンチマーク的には6倍の性能差</li>
+<li>ListViewの処理時間的には16倍</li>
+</ul></li>
+
+<li><p>VS2015のパフォーマンス測定</p>
+
+<ul>
+<li>どこの処理に時間がかかってるのかが測れる(DiskI/O,Network,XAMLlayout)</li>
+</ul></li>
+
+<li><p>XAMLが遅い</p>
+
+<ul>
+<li>パースとレンダリング</li>
+</ul></li>
+
+<li><p>速くするには</p>
+
+<ul>
+<li>複雑なレイアウトを避ける、ネストは浅く</li>
+<li>色指定などのパラメータを文字列で渡すとクラスへの変換が走るので遅くなる、Resource化も検討</li>
+<li>Resourceにするときは、PageやUserContolのように毎回生成が走るところに置かない</li>
+<li>デフォルト値でいいなら、そもそも引数を渡さないのもアリ</li>
+</ul></li>
+
+<li><p>Panelは並べ方で速度が変わる</p>
+
+<ul>
+<li>複雑なGirdは遅い</li>
+<li>Canvasは絶対座標でレンダリングされ、周囲に対する依存がないので高速</li>
+</ul></li>
+
+<li><p>Win8.x向けアプリをWin10で動かすときは地雷を踏むかも</p>
+
+<ul>
+<li>Listview on ScrollViewer</li>
+</ul></li>
+
+<li><p>つねにパフォーマンスを意識する</p>
+
+<ul>
+<li>XAMLが複雑になりすぎてないか</li>
+<li>計測する</li>
+</ul></li>
+</ul>
+
+<h2 id="lt">LT</h2>
+
+<ul>
+<li>Windows 10 IoT
+
+<ul>
+<li>焦電センサで人がいるか判断するやつ</li>
+</ul></li>
+<li>KanColleViewerプラグイン
+
+<ul>
+<li>NuGetからパッケージ入れて、IPluginとIToolを実装</li>
+</ul></li>
+<li>VisualStudio拡張機能
+
+<ul>
+<li>熊予測</li>
+<li>エディタの背景に画像が！</li>
+</ul></li>
+<li>NotificationsExtentions on Win10
+
+<ul>
+<li>ライブタイルがサクッと</li>
+</ul></li>
+<li>Office</li>
+</ul>
+
+</div>
+
+    
+<footer class='entry-footer'>
+  
+    
+  
+    
+  
+</footer>
+
+
+  </article>
+
+  
+
+  
+    <div class='comments-container'>
+  
+</div>
+
+  
+</main>
+
+    <footer id='footer' class='footer-container'>
+      <div class='footer'>
+        <div class='social'>
+  <nav aria-label='Social Menu'>
+    <ul class='social-menu'><li>
+        <a href='https://github.com/nibral' target='_blank' rel='noopener'>
+          <span class='screen-reader'>Open Github account in new tab</span>
+          
+            <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+
+          
+        </a>
+      </li><li>
+        <a href='https://qiita.com/nibral' target='_blank' rel='noopener'>
+          <span class='screen-reader'>Open Qiita account in new tab</span>
+          
+          <span class="fa-stack" style="color:#4cb10d; font-size: 60%;">
+              <i class="fa fa-square fa-stack-2x"></i>
+              <i class="fa fa-search fa-stack-1x fa-inverse fa-2x"></i>
+          </span>
+          
+        </a>
+      </li><li>
+        <a href='https://twitter.com/_nibral' target='_blank' rel='noopener'>
+          <span class='screen-reader'>Open Twitter account in new tab</span>
+          
+            <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+
+          
+        </a>
+      </li></ul>
+  </nav>
+</div>
+
+        <div class='copyright'>
+          <p>
+    
+      
+    
+  
+  &copy; 2015-2017 nibral</p>
+
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src='/js/main.af838dd5.js'></script>
+  
+    <script src='/js/custom.js'></script>
+  
+
+</body>
+
+</html>
+

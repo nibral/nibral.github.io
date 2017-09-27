@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='やるべきこと  WDC-150SU2M(=Realtek 8188eu)のドライバをインストール dhcphdとwpa_suppcilantでネットワークに接続  ドライバのインストール WDC-150SU2M(=Realtek 8188eu)のドライバをインストールして、ネットワークに接続する。
+Raspbian更新 sudo apt-get update sudo apt-get upgrade  ファームウェア更新 rpi-update  Linuxバージョン確認 uname -a  表示されたバージョン番号を確認する。(2015/12/8時点では4.1.13-v7&#43; #826)
+ドライバダウンロード https://www.raspberrypi.org/forums/viewtopic.php?p=462982から対応するバージョンのファイル名(8188eu-v7-yyyymmdd.tar.gz)を探す。PiとPi2でファイルが違うので注意。
+ドライバインストール wget https://dl.dropboxusercontent.com/u/80256631/8188eu-v7-2015yyzz.tar.gz tar xzf 8188eu-v7-yyyymmdd.tar.gz ./install.sh  再起動 sudo reboot now  認識していることを確認 lsusb  &ldquo;ID 056e:4008 Elecom Co., Ltd&rdquo;が表示されていれば正常に認識されている。
+ネットワークに接続 プロファイル作成 /etc/wpa_supplicant/wpa_supplicant.confを作成する。
+{% gist 944802d888a5d5536559 %}
+network={...}の部分はwpa_passphrase 接続したいSSID パスワードを実行して生成できる。 コマンドの出力にはコメントとしてパスワードの平文が含まれている(#psk=&hellip;)ので、心配なら削除する。
+接続 標準で動いているdhcpcdは特定の名前が付いた設定ファイルを自動で読み込むので(dhcpcd#10-wpa_supplicant - ArchWiki)、dhcpcdを再起動すれば接続できるはず。
+sudo systemctl daemon-reload sudo service dhcpcd restart  うまくいかない場合はwpa_cliで対話型の設定コンソールが開いて何とかする。'>
+
+<meta property='og:title' content='Raspberry Pi 2 Model B &#43; WDC-150SU2Mで無線LANに接続する • nibral'>
+<meta property='og:description' content='やるべきこと  WDC-150SU2M(=Realtek 8188eu)のドライバをインストール dhcphdとwpa_suppcilantでネットワークに接続  ドライバのインストール WDC-150SU2M(=Realtek 8188eu)のドライバをインストールして、ネットワークに接続する。
+Raspbian更新 sudo apt-get update sudo apt-get upgrade  ファームウェア更新 rpi-update  Linuxバージョン確認 uname -a  表示されたバージョン番号を確認する。(2015/12/8時点では4.1.13-v7&#43; #826)
+ドライバダウンロード https://www.raspberrypi.org/forums/viewtopic.php?p=462982から対応するバージョンのファイル名(8188eu-v7-yyyymmdd.tar.gz)を探す。PiとPi2でファイルが違うので注意。
+ドライバインストール wget https://dl.dropboxusercontent.com/u/80256631/8188eu-v7-2015yyzz.tar.gz tar xzf 8188eu-v7-yyyymmdd.tar.gz ./install.sh  再起動 sudo reboot now  認識していることを確認 lsusb  &ldquo;ID 056e:4008 Elecom Co., Ltd&rdquo;が表示されていれば正常に認識されている。
+ネットワークに接続 プロファイル作成 /etc/wpa_supplicant/wpa_supplicant.confを作成する。
+{% gist 944802d888a5d5536559 %}
+network={...}の部分はwpa_passphrase 接続したいSSID パスワードを実行して生成できる。 コマンドの出力にはコメントとしてパスワードの平文が含まれている(#psk=&hellip;)ので、心配なら削除する。
+接続 標準で動いているdhcpcdは特定の名前が付いた設定ファイルを自動で読み込むので(dhcpcd#10-wpa_supplicant - ArchWiki)、dhcpcdを再起動すれば接続できるはず。
+sudo systemctl daemon-reload sudo service dhcpcd restart  うまくいかない場合はwpa_cliで対話型の設定コンソールが開いて何とかする。'>
+<meta property='og:url' content='http://nibral.github.io/posts/2015-12-14-raspi2_with_8188eu/'>
+<meta property='og:site_name' content='nibral.github.io'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2015-12-14T12:00:00&#43;09:00'/><meta property='article:modified_time' content='2015-12-14T12:00:00&#43;09:00'/>
+
+<meta name="generator" content="Hugo 0.29" />
+
+  <title>Raspberry Pi 2 Model B &#43; WDC-150SU2Mで無線LANに接続する • nibral</title>
+  <link rel='canonical' href='http://nibral.github.io/posts/2015-12-14-raspi2_with_8188eu/'>
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700&subset=latin'>
+<link rel='stylesheet' href='/css/main.67a788c9.css'>
+
+  <link rel='stylesheet' href='/css/custom.css'>
+
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+
+
+</head>
+
+
+<body class='page'>
+  <div class='site'>
+    <header id='header' class='header-container'>
+      <div class='site-header'>
+        <nav id='navmenu' aria-label='Main Menu'>
+  <ul class='main-menu'>
+    
+    <li>
+      <a href='/' 
+        
+      >Home</a>
+    </li>
+    
+    <li>
+      <a href='/posts/' 
+        
+      >Tech Note</a>
+    </li>
+    
+  </ul>
+</nav>
+
+        <div class='site-info'>
+          
+          <p class='site-title title'>nibral.github.io</p>
+          
+          <p class='site-description'>Hello.</p>
+        </div>
+      </div>
+    </header>
+
+
+<main class='main'>
+  <article lang='en' class='entry'>
+    <header class='entry-header'>
+  <div class='entry-info'>
+    <h1 class='entry-title title'>Raspberry Pi 2 Model B &#43; WDC-150SU2Mで無線LANに接続する</h1>
+    
+  </div>
+  
+<div class='meta'>
+  <span class='posted-on'>
+    <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+
+    <span class='screen-reader'>Posted on </span>
+    <time class='date' datetime='2015-12-14T12:00:00&#43;09:00'>2015/12/14</time>
+  </span>
+  
+  <span class='byline'>
+    <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+
+    <span class='screen-reader'> by </span>
+    nibral
+  </span>
+  
+  
+</div>
+
+
+</header>
+
+    <div class='entry-content'>
+  
+
+<h2 id="やるべきこと">やるべきこと</h2>
+
+<ul>
+<li>WDC-150SU2M(=Realtek 8188eu)のドライバをインストール</li>
+<li>dhcphdとwpa_suppcilantでネットワークに接続</li>
+</ul>
+
+<h1 id="ドライバのインストール">ドライバのインストール</h1>
+
+<p>WDC-150SU2M(=Realtek 8188eu)のドライバをインストールして、ネットワークに接続する。</p>
+
+<h2 id="raspbian更新">Raspbian更新</h2>
+
+<pre><code>sudo apt-get update
+sudo apt-get upgrade
+</code></pre>
+
+<h2 id="ファームウェア更新">ファームウェア更新</h2>
+
+<pre><code>rpi-update
+</code></pre>
+
+<h2 id="linuxバージョン確認">Linuxバージョン確認</h2>
+
+<pre><code>uname -a
+</code></pre>
+
+<p>表示されたバージョン番号を確認する。(2015/12/8時点では4.1.13-v7+ #826)</p>
+
+<h2 id="ドライバダウンロード">ドライバダウンロード</h2>
+
+<p><a href="https://www.raspberrypi.org/forums/viewtopic.php?p=462982">https://www.raspberrypi.org/forums/viewtopic.php?p=462982</a>から対応するバージョンのファイル名(8188eu-v7-yyyymmdd.tar.gz)を探す。PiとPi2でファイルが違うので注意。</p>
+
+<h2 id="ドライバインストール">ドライバインストール</h2>
+
+<pre><code>wget https://dl.dropboxusercontent.com/u/80256631/8188eu-v7-2015yyzz.tar.gz
+tar xzf 8188eu-v7-yyyymmdd.tar.gz
+./install.sh
+</code></pre>
+
+<h2 id="再起動">再起動</h2>
+
+<pre><code>sudo reboot now
+</code></pre>
+
+<h2 id="認識していることを確認">認識していることを確認</h2>
+
+<pre><code>lsusb
+</code></pre>
+
+<p>&ldquo;ID 056e:4008 Elecom Co., Ltd&rdquo;が表示されていれば正常に認識されている。</p>
+
+<h1 id="ネットワークに接続">ネットワークに接続</h1>
+
+<h2 id="プロファイル作成">プロファイル作成</h2>
+
+<p><code>/etc/wpa_supplicant/wpa_supplicant.conf</code>を作成する。</p>
+
+<p>{% gist 944802d888a5d5536559 %}</p>
+
+<p><code>network={...}</code>の部分は<code>wpa_passphrase 接続したいSSID パスワード</code>を実行して生成できる。
+コマンドの出力にはコメントとしてパスワードの平文が含まれている(#psk=&hellip;)ので、心配なら削除する。</p>
+
+<h2 id="接続">接続</h2>
+
+<p>標準で動いているdhcpcdは特定の名前が付いた設定ファイルを自動で読み込むので(<a href="https://wiki.archlinuxjp.org/index.php/Dhcpcd#10-wpa_supplicant">dhcpcd#10-wpa_supplicant - ArchWiki</a>)、dhcpcdを再起動すれば接続できるはず。</p>
+
+<pre><code>sudo systemctl daemon-reload
+sudo service dhcpcd restart
+</code></pre>
+
+<p>うまくいかない場合は<code>wpa_cli</code>で対話型の設定コンソールが開いて何とかする。</p>
+
+<h2 id="固定ip">固定IP</h2>
+
+<p>dhcpcdの設定と競合するので<code>/etc/network/interfaces</code>は書き換えない。
+dhcpcdの設定ファイル<code>/etc/dhcpcd.conf</code>の末尾に下記の設定を追記するか、DHCPサーバ側でリースするIPを固定する。</p>
+
+<pre><code>interface wlan0
+static ip_address=192.168.0.81/24
+static routers=192.168.0.1
+static domain_name_servers=192.168.0.1
+</code></pre>
+
+<p>ただ、標準でavahiが動いていて&rdquo;raspberypi.local&rdquo;でアクセスできるのでサーバ運用しないならIPを固定する必要はない気がする。
+(WindowsではBonjourが必要だが、<a href="https://support.apple.com/downloads/Bonjour_for_Windows">単体のインストーラが提供されている。</a>)</p>
+
+</div>
+
+    
+<footer class='entry-footer'>
+  
+    
+  
+    
+  
+</footer>
+
+
+  </article>
+
+  
+
+  
+    <div class='comments-container'>
+  
+</div>
+
+  
+</main>
+
+    <footer id='footer' class='footer-container'>
+      <div class='footer'>
+        <div class='social'>
+  <nav aria-label='Social Menu'>
+    <ul class='social-menu'><li>
+        <a href='https://github.com/nibral' target='_blank' rel='noopener'>
+          <span class='screen-reader'>Open Github account in new tab</span>
+          
+            <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+
+          
+        </a>
+      </li><li>
+        <a href='https://qiita.com/nibral' target='_blank' rel='noopener'>
+          <span class='screen-reader'>Open Qiita account in new tab</span>
+          
+          <span class="fa-stack" style="color:#4cb10d; font-size: 60%;">
+              <i class="fa fa-square fa-stack-2x"></i>
+              <i class="fa fa-search fa-stack-1x fa-inverse fa-2x"></i>
+          </span>
+          
+        </a>
+      </li><li>
+        <a href='https://twitter.com/_nibral' target='_blank' rel='noopener'>
+          <span class='screen-reader'>Open Twitter account in new tab</span>
+          
+            <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+
+          
+        </a>
+      </li></ul>
+  </nav>
+</div>
+
+        <div class='copyright'>
+          <p>
+    
+      
+    
+  
+  &copy; 2015-2017 nibral</p>
+
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src='/js/main.af838dd5.js'></script>
+  
+    <script src='/js/custom.js'></script>
+  
+
+</body>
+
+</html>
+

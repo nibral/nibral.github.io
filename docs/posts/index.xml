@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tech Note on nibral.github.io</title>
+    <link>http://nibral.github.io/posts/</link>
+    <description>Recent content in Tech Note on nibral.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 21 May 2016 12:00:00 +0900</lastBuildDate>
+    
+	<atom:link href="http://nibral.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Amazon Linuxに最新版のnginxをインストールする</title>
+      <link>http://nibral.github.io/posts/2016-05-21-latest_nginx_on_amazon_linux/</link>
+      <pubDate>Sat, 21 May 2016 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2016-05-21-latest_nginx_on_amazon_linux/</guid>
+      <description>amzn-mainリポジトリに登録されてるnginxが古いので、 yumにnginxのリポジトリを追加して最新版をインストールする。
+注:インターネットからアクセスするためには、HTTP(80番ポート)の通信を許可するように セキュリティグループを作成してインスタンスに割り当てる必要がある。詳細は Linux インスタンスの Amazon EC2 セキュリティグループ を参照。
+ amzn-mainリポジトリのnginxを無効化(exclude行を追加)  sudo vi /etc/yum.repos.d/amzn-main.repo -------- [amzn-main] name=amzn-main-Base mirrorlist=http://repo.$awsregion.$awsdomain/$releasever/main/mirror.list mirrorlist_expire=300 metadata_expire=300 priority=10 failovermethod=priority fastestmirror_enabled=0 gpgcheck=1 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-ga enabled=1 retries=5 timeout=10 report_instanceid=yes exclude=nginx   nginxリポジトリの定義ファイルを作成  sudo vi /etc/yum.repos.d/nginx.repo -------- [nginx] name=nginx repo baseurl=http://nginx.org/packages/centos/6/$basearch/ gpgcheck=0 enabled=1   nginxをインストール  sudo yum install nginx   サービス起動、自動起動オン  sudo service nginx start sudo chkconfig nginx on   動作確認  http://&amp;lt;インスタンスのIP/&amp;gt;にアクセスして、下のようなページが出ればOK</description>
+    </item>
+    
+    <item>
+      <title>Raspberry Pi 2をVPNサーバに仕立てる</title>
+      <link>http://nibral.github.io/posts/2016-04-11-vpnserver_on_raspi2/</link>
+      <pubDate>Mon, 11 Apr 2016 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2016-04-11-vpnserver_on_raspi2/</guid>
+      <description>はじめに 購入直後にひとしきり遊んで放置されていたRasberry Pi 2 Model Bを発見したので、
+ 公衆無線LAN利用時のセキュリティ向上 自宅NASへのアクセス  を目的としてVPNサーバを立てた。VPNソフトウェアはSoftEther VPN。 また、
+ 接続するLANでDHCPが提供されている 作業はすべてSSH経由で行い、USBキーボードとマウスを使わない(適当なHDMI対応モニタがなかったので) SoftEther VPNの設定は、別のWindowsマシンから「SoftEther VPN サーバ管理マネージャ」を使って行う  ものとする。
+やるべきこと  OSのインストール Raspbianのセットアップ ネットワーク設定 SoftEther VPNのインストール  OSのインストールと初期セットアップ まず、Raspberry Pi公式のRaspbianダウンロードページから OSイメージをダウンロードする。Raspbianには通常版とLite版があるが、Lite版でインストールされないパッケージに 依存するソフトウェアがあると面倒なので今回は通常版を選択。
+zipを展開して2016-03-18-raspbian-jessie.imgを手に入れたら、それをmicroSDに書き込む。 今回はLinuxマシンで作業したので、ddコマンドを使う。 コマンドは公式のインストールガイドそのまま。 (of=で示される書き込み先は環境により異なるので、先にdf -hでmicroSDのデバイス名を確認しておく)
+dd bs=4M if=2016-03-18-raspbian-jessie.img of=/dev/sdb  書き込みが終わったら、syncを実行してからmicroSDを取り出す。
+Raspbianのセットアップ OSイメージを書き込んだmicroSDをRasPiに差し込み、LANケーブルと電源を接続する。 DHCP環境であれば、数分もするとIPが割り当てられてSSHでアクセスできるようになる。 本来はRasPiに割り当てられたIPを探すために必要があるが、今回はルータでIPの割り当てが確認できたので不要だった。 IPがわかったらSSHで接続し(ユーザ名pi、パスワードraspberry)、Raspberry Piの設定を行う。
+raspi-config  少なくとも、「1. Expand Filesystem」の実行と「4. i18n Options」のロケールとタイムゾーン設定は必須。 終わったら一旦再起動し、続いて各種アップグレードを済ませる。
+apt-get update apt-get upgrade rpi-update  ファームウェアの更新が行われるためここでも再起動。
+ネットワーク設定 サーバとして動作させる関係上、RasPiのIPは固定値が望ましい。通常はサーバ側に固定IPを設定するが、RasPiでは Zeroconfの実装であるavahi-daemonが 標準で動作していて、DHCPで割り当てられたIPに対してraspberrypi.</description>
+    </item>
+    
+    <item>
+      <title>リーダブルコードを読んだ</title>
+      <link>http://nibral.github.io/posts/2016-01-09-note_of_readable_code/</link>
+      <pubDate>Sat, 09 Jan 2016 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2016-01-09-note_of_readable_code/</guid>
+      <description>気になった記述や考え方のメモ。
+1章「理解しやすいコード」  読みやすさの基本定理…優れたコード=他人が理解するのに要する時間が最短のコード  カッコいいコードを書こうとしてテクニックに走り、読みづらいコードにならないように。   2章「名前に情報を詰め込む」  正確かつ明確な名前・表現を探す。GetよりもDownloadやFetchが適切かもしれない。 変数名の長さとスコープを反比例させる。数行の間しか使われない変数に長い名前は必要ない。 アンダースコア(_)やダッシュ(-)、大文字小文字を使って情報を表現する。  CamelCaseとsnake_caseを混在させるのは微妙に感じる。大規模なコードでは有用なんだろうか。   3章「誤解されない名前を使う」  範囲を指定するときは境界値を含むのかを明らかにする。 名前は肯定形を使うとよい。(disable_ssl→use_ssl) 軽い処理であることが期待されやすい名前に注意する。(ex. get,size)  4章「美しさ」  改行や空白を揃えて、同じような処理は同じような見た目にする。 最後は個人の好みの問題…正しさよりも、一貫性  5章「コメントすべきことを知る」  優れたコード &amp;gt; 悪いコード+優れたコメント。コードのクオリティを上げるのが先。 コードそのものの説明はしない。自分の考えやコードの根拠をコメントに残す。  6章「コメントは正確で簡潔に」  あいまいな表現をしない。「優先度を変える」は「高くする or 低くする」として明確に。 動作のわかりにくいコードには実例を示す。 可能であれば、関数呼び出しの際に引数に名前を付ける。  C++やJavaならIDEを使うだろうし、インラインコメントを使ってまで1行に書かなくてもいいのでは。   7章「制御フローを読みやすくする」  条件式を書くときは、変化する値を左、安定した値を右に書く。 分岐(if)や繰り返し(for,while)では単純なもの、目立つものを先に片づける。  8章「巨大な式を分割する」  式が長くなったら、変数を作って概念レベルで意味を持つ単位に分割する。 より簡単な条件で目的を達成する方法はないか考える。条件を逆にしたら簡単にならないか？  9章「変数と読みやすさ」  1度しか使われていなかったり、中間結果を保持している変数は削除する。  後で何度も使うだろうと思って変数にして、結局1回しか使わないパターンに注意する。  変数のスコープは短く、書き換える場所は少ないほうがよい。  ES6のletやconstはこの考え方を実現するのによさそう。   10章「無関係の下位問題を抽出する」  純粋な計算やユーティリティのコードを別の関数に分離することで、本来の問題に集中しやすくなる。  デバッグ出力用のコードを関数化しておくことで、再帰的に使うことができる(配列要素の列挙がラクになる)のがgood。  汚いインターフェースを使うために長いコードを書くくらいなら、その労力でラッパーを作ってインターフェースをきれいにする。  11章「1度に1つのことを」  コード中で複数のタスクを行ったり来たりしない。タスクと値を洗い出して、1つずつ片付ける。  12章「コードに思いを込める」  実装したい処理について他人に説明するならどう話すかを考え、出てきたキーワードを元にコードを書く。  その説明でおばあちゃんは理解できるか？   13章「短いコードを書く」  「コードを書かずに済ませる」ことも手段の一つ。コードが少なければ付随する仕事も少なくて済む。  要求にあったレベルの実装で終わらせる。新しい機能は必要になるまでつけない。  標準ライブラリやAPIの一覧に目を通しておき、「その機能、どこかにあったような…」と思えるとよい。  14章「テストと読みやすさ」  あるユニットに対するテストは、「状態Aにおける入力xに対して、動作Bと結果yが得られる」という1行で説明できることが多い。 テストに用いる値は可能な限り単純なものにする。1回のテストで複数の状況をチェックしようとしない。  15章「分／時間カウンタを設計・実装する」  処理の計算量・メモリ使用量を意識し、可能であればO(1)で実行できるように実装する。  「最大要素数が設定可能なキュー」のような汎用に使えるものなら、既存のライブラリを探してみる。  クラスを分割することになっても、外部に公開されるのは1つだけならば問題ない。  まとめ 自分が書いたコードのことを忘れてもいいように、読みやすいコード、適切なコメントを書く。</description>
+    </item>
+    
+    <item>
+      <title>Surface 3で402KCのBluetoothテザリングが使いたかった</title>
+      <link>http://nibral.github.io/posts/2015-12-24-tethering_surface3_with_402kc/</link>
+      <pubDate>Thu, 24 Dec 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-12-24-tethering_surface3_with_402kc/</guid>
+      <description>追記:初出時は「Bluetoothテザリングを使う」というタイトルでしたが、いざ外で使ってみたところ非常に遅い上に不安定というどうしようもない挙動だったのでこの方法はお勧めしません。
+注:Windows 8.1でのお話です
+問題:402KCとペアリングできない Surface 3で402KCのBluetoothテザリングを使うためには、PAN(Personal Area Network)プロファイルでペアリングしなければならない。 当初やろうとしていた手順は、
+ 402KCでBluetoothテザリングの機器登録画面を開き、新規登録が行える状態にする
+ Surface 3でチャームを出し、「設定」→「PC設定の変更」→「PCとデバイス」→「Bluetooth」を開いて402KCとペアリングを始める
+ 双方の端末に表示されたパスコードが一致していることを確認して続行する
+  ところが、これだと402KC側で「登録中」画面のままタイムアウトで失敗してしまう。
+このとき、Surface 3側ではペアリング完了の表示になっている。
+正確な原因はわからないが、Surface 3上の表示がヘッドセットのアイコン(HFP？)になっているところを見ると、 Surface 3がペアリング後にPANプロファイルの要求(のようなもの)を出しておらず、402KCがこの要求を待ち続けてしまってタイムアウトになると推測。
+解決策:デバイスとプリンターからペアリングする 「PANの要求が出ないのが問題なら出せばいい」ということでWindowsでのBTテザリングの手順とかを調べたところ、 コントロールパネルの「デバイスとプリンター」から操作することでうまくペアリングできた。以下手順。
+ 402KCでBluetoothテザリングの機器登録画面を開き、新規登録が行える状態にする
+ Surface 3で「デバイスとプリンター」を開く
+ 画面左上の「デバイスの追加」を押し、402KCを選んで「次へ」
+ パスコードの一致を確認して続行する
+ Surface 3でペアリング処理が行われ、402KCも「登録中」の表示になる
+ 402KCの処理がタイムアウトになる前に「デバイスとプリンター」上で402KCを選択し、画面上の「接続方法」から「アクセスポイント」を押す。
+ 「接続に成功しました」というメッセージが出て、402KCに詳細情報が表示される(PAN対応機器として認識されていることがわかる)。   402KCへの登録さえ成功すれば、次からは「402KCでBTテザリングをオンにする」→「Surface 3からPANで接続」するだけで接続できる。 ping100ms越えは当たり前、速度も良くて200kbps前後の微妙な回線ではあるけれど、ないよりマシということで。</description>
+    </item>
+    
+    <item>
+      <title>Raspberry Pi 2 Model B &#43; WDC-150SU2Mで無線LANに接続する</title>
+      <link>http://nibral.github.io/posts/2015-12-14-raspi2_with_8188eu/</link>
+      <pubDate>Mon, 14 Dec 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-12-14-raspi2_with_8188eu/</guid>
+      <description>やるべきこと  WDC-150SU2M(=Realtek 8188eu)のドライバをインストール dhcphdとwpa_suppcilantでネットワークに接続  ドライバのインストール WDC-150SU2M(=Realtek 8188eu)のドライバをインストールして、ネットワークに接続する。
+Raspbian更新 sudo apt-get update sudo apt-get upgrade  ファームウェア更新 rpi-update  Linuxバージョン確認 uname -a  表示されたバージョン番号を確認する。(2015/12/8時点では4.1.13-v7+ #826)
+ドライバダウンロード https://www.raspberrypi.org/forums/viewtopic.php?p=462982から対応するバージョンのファイル名(8188eu-v7-yyyymmdd.tar.gz)を探す。PiとPi2でファイルが違うので注意。
+ドライバインストール wget https://dl.dropboxusercontent.com/u/80256631/8188eu-v7-2015yyzz.tar.gz tar xzf 8188eu-v7-yyyymmdd.tar.gz ./install.sh  再起動 sudo reboot now  認識していることを確認 lsusb  &amp;ldquo;ID 056e:4008 Elecom Co., Ltd&amp;rdquo;が表示されていれば正常に認識されている。
+ネットワークに接続 プロファイル作成 /etc/wpa_supplicant/wpa_supplicant.confを作成する。
+{% gist 944802d888a5d5536559 %}
+network={...}の部分はwpa_passphrase 接続したいSSID パスワードを実行して生成できる。 コマンドの出力にはコメントとしてパスワードの平文が含まれている(#psk=&amp;hellip;)ので、心配なら削除する。
+接続 標準で動いているdhcpcdは特定の名前が付いた設定ファイルを自動で読み込むので(dhcpcd#10-wpa_supplicant - ArchWiki)、dhcpcdを再起動すれば接続できるはず。
+sudo systemctl daemon-reload sudo service dhcpcd restart  うまくいかない場合はwpa_cliで対話型の設定コンソールが開いて何とかする。</description>
+    </item>
+    
+    <item>
+      <title>ffmpeg on CentOS</title>
+      <link>http://nibral.github.io/posts/2015-09-05-ffmpeg-on-centos/</link>
+      <pubDate>Sat, 05 Sep 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-09-05-ffmpeg-on-centos/</guid>
+      <description>はじめに 公式のインストールガイドを参考に、余計なオプション入れてないffmpegをビルドしよう(x264とfdk_aac)
+Git yumのパッケージが古いので自分でビルドする
+git 依存関係の解決
+sudo yum install curl-devel expat-devel gcc gettext-devel make openssl-devel zlib-devel perl-ExtUtils-MakeMaker  Gitのダウンロード
+wget https://www.kernel.org/pub/software/scm/git/git-x.x.x.tar.gz  展開してビルド、インストール
+tar -zxf git-x.x.x.tar.gz cd git-x.x.x make prefix=/usr/local all sudo make prefix=/usr/local install  ffmpeg 依存関係の解決 sudo yum install autoconf automake cmake freetype-devel gcc-c++ libtool nasm pkgconfig  変更点
+ gcc,make,zlib-devel…gitのビルドでインストール済 git…上でビルドしたものと競合 mercurial…libx265をダウンロードしないので不要  ビルド ダウンロード用のディレクトリを切る
+mkdir ffmpeg-source  yasm
+cd ~/ffmpeg_sources git clone --depth 1 git://github.com/yasm/yasm.git cd yasm autoreconf -fiv .</description>
+    </item>
+    
+    <item>
+      <title>CentOS7でSSHを使う</title>
+      <link>http://nibral.github.io/posts/2015-09-06-ssh-on-centos-7/</link>
+      <pubDate>Sat, 22 Aug 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-09-06-ssh-on-centos-7/</guid>
+      <description>CentOS7になって、iptablesがfirewalldになったりsystemctl使うようになったりしたので、6.x系から変わったところを中心に。
+ユーザ関連 インストール中に一般ユーザを作成し、かつそのユーザでsudoコマンドを使いたい場合、インストール完了後に当該ユーザをwheelグループに追加する
+gpasswd -a akari wheel  firewalld 結局、firewalldの設定はどこを見ているのか？
+ firewalldが立ち上がると、各NICに対して「ゾーン」が紐付けされる ゾーンには「サービス」や「ポート」、「マスカレードの可否」といったルールが紐付けされている  このルールに従って、パケットを通したり捨てたりする  サービスのルールはxmlファイルに保存されていて、必要に応じて編集できる  初期状態では、/usr/lib/firewalld/servicesに保存されているxmlファイルを参照している ファイルを編集したいときは直接編集せず、/etc/firewalld/servicesにコピーして書き換える   sshdの標準ルール
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt; &amp;lt;service&amp;gt; &amp;lt;short&amp;gt;SSH&amp;lt;/short&amp;gt; &amp;lt;description&amp;gt;略&amp;lt;/description&amp;gt; &amp;lt;port protocol=&amp;quot;tcp&amp;quot; port=&amp;quot;22&amp;quot;/&amp;gt; &amp;lt;/service&amp;gt;  sshdのポートを変える場合
+cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/ssh.xml vi /etc/firewalld/services/ssh.xml &amp;lt;port protocol=&amp;quot;tcp&amp;quot; port=&amp;quot;22&amp;quot;/&amp;gt; ↓ &amp;lt;port protocol=&amp;quot;tcp&amp;quot; port=&amp;quot;10022&amp;quot;/&amp;gt; systemctl restart firewalld  ただ、手元の環境ではfirewalldの再起動がタイムアウトして失敗する。 設定に問題があるか、サービス間の依存関係に見落としがあるか、単にマシンの性能が足りないか(Celeron N3050でHyper-Vは重い)。 設定が終わったあとにrebootしたらちゃんと動いたのでよし。
+SELinux 管理ツールのインストール
+yum install policycoreutils-python  sshdが待ち受けるポートとしてTCPの10022番を追加
+semanage port -a -t ssh_port_t -p tcp 10022  ちゃんと登録できたか確認</description>
+    </item>
+    
+    <item>
+      <title>めとべや東京#9 メモ</title>
+      <link>http://nibral.github.io/posts/2015-08-22-roommetro-tokyo-9/</link>
+      <pubDate>Sat, 22 Aug 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-08-22-roommetro-tokyo-9/</guid>
+      <description>UWPアプリケーション開発入門  当日の資料
+ UWP
+ Windows 10ならどこでもうごく Desktop,Mobile,IoT,Holo Lens,Xbox,etc.  WinRTとプラットフォームの構成が似てる
+ 基本的にUniversal Windows Platformの上で走る  Bridge for&amp;hellip;
+ (iOS)Obj-CのコードをVSでビルドして実行できる、ただしストーリーボード非対応(?) (Android)apkを提出して変換 (Web) (Classic)WPFを変換  UWPのメリット
+ ストア配布なので不特定多数に配りやすい ライバル少ない(人気が…) タッチ操作は作りやすい  デメリット
+ 限定配布は難しい 複雑なフォームは作りにくい  Hello,world demo
+ イベントハンドラ作って動かす感じ  まとめ
+ マルチプラットフォーム化が進むよ Xamarinもらおうね   MADOSMAのこれまでとこれから、とWindows 10  冒頭  MCJ 平井さんセッション&amp;#10;「Windows 10 を使っている方は…？」 &amp;#10;8 割くらい手が挙がる&amp;#10;「MADOSMA ご利用の方は…？」&amp;#10;8 割くらい手が挙がる&amp;#10;&amp;#10;「異常ですねぇ」 #めとべや
+&amp;mdash; ぐらばく (@Grabacr07) 2015, 8月 22 
+ 開発者以外、地方で意外に売れてる</description>
+    </item>
+    
+    <item>
+      <title>Windowsからvagrant-digitaloceanを使う</title>
+      <link>http://nibral.github.io/posts/2015-08-16-vagrant-digitalocean-on-windows/</link>
+      <pubDate>Sun, 16 Aug 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-08-16-vagrant-digitalocean-on-windows/</guid>
+      <description>Digital Oceanのクーポンが余ってたので、Vagrantから使ってみる。 ローカルに仮想環境を立てないのでVirtualBoxはインストール不要、 持ち運ぶ端末が仮想化をサポートしない(Surface 3とか)場合も安心。
+ConEmuの設定 今回は、UNIXのツール群が使える環境としてGit BashをConEmuから呼ぶことにする。
+まず、メニューのSettings...からStartup→Tasksを開く。 左下の+を押してタスクを追加し、Commandsの欄にGit Bashの場所を書けばOK。 このとき、引数に--login -iを渡すのと、パス全体をダブルクォートで囲むことに注意する。 そのままだと日本語が化けるので、vi ~/.bash_profileで以下のエイリアスを追加する。
+alias ls=&#39;ls --show-control-chars&#39;  あと、Git Bashにはrsyncが入っていないので、rsyncをGit for Windowsに混ぜるを参考にMinGWのパッケージからexeとdllを持ってくる。 rsync --versionでバージョン情報が見られればOK。
+vagrant-digitaloceanのインストール インストールはコマンド一発。
+vagrant plugin install vagrant-digitalocean  Git Bash(=MSYS)環境の場合、インストールしただけだとvagrant upの途中でエラーが出て失敗する。 これは、rsyncでDropletとの同期を設定する時のディレクトリ指定がCygwinスタイル(/cygdrive/c/Users/...)になっているため。 ここを設定するオプションは(たぶん)ないので、ソースそのものを書き換えてMSYSスタイル(/c/Users/...)になるようにする。
+手順としては、同期を設定する処理が書かれているファイルを開き、
+cd ~/.vagrant.d/gems/gems/vagrant-digitalocean-0.7.7/lib/vagrant-digitalocean/actions vi sync_folders.rb  37～40行目、ディレクトリ表記を変換している部分から、
+# on windows rsync.exe requires cygdrive-style paths if Vagrant::Util::Platform.windows? hostpath = hostpath.gsub(/^(\w):/) { &amp;quot;/cygdrive/#{$1}&amp;quot; } end  /cygdriveを消す。
+# on windows rsync.exe requires cygdrive-style paths if Vagrant::Util::Platform.</description>
+    </item>
+    
+    <item>
+      <title>CentOS 6インストールと初期設定</title>
+      <link>http://nibral.github.io/posts/2015-08-09-install-centos-6/</link>
+      <pubDate>Sun, 09 Aug 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-08-09-install-centos-6/</guid>
+      <description>netinstallが終わって、rootでログインしたところから
+パッケージのアップデート yum update  suの設定変更 suをwheelグループに限定
+vi /etc/pam.d/su -# auth required pam_wheel.so use_uid +auth required pam_wheel.so use_uid  sudoの設定
+visudo -# %wheel ALL=(ALL) ALL +%wheel ALL=(ALL) ALL  作業用ユーザ作成 ユーザ追加
+useradd -G wheel akari  パスワード変更
+passwd akari  SSHの設定 SSHクライアントを使って、作業用ユーザでログイン(22番ポート)
+ssh鍵作成
+ssh-keygen cp .ssh/id_rsa.pub .ssh/authorized_keys chmod 600 .ssh/authorized_keys  手元の端末に秘密鍵を持ってくる
+cat .ssh/id_rsa  作業用ユーザからログアウト、rootに戻る
+sshdの設定変更(ポート変更、rootログイン無効、鍵認証を強制)
+vi /etc/ssh/sshd_config Port 10022 PermitRootLogin no PasswordAuthenication no AuthorizedKeysFile .ssh/authorized_keys  ファイアウォールの設定 必要パッケージのインストール</description>
+    </item>
+    
+    <item>
+      <title>Jekyllで日付に基づいたディレクトリを作らない</title>
+      <link>http://nibral.github.io/posts/2015-08-09-jekyll-post-without-date/</link>
+      <pubDate>Sun, 09 Aug 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-08-09-jekyll-post-without-date/</guid>
+      <description>_postsディレクトリに記事を入れるとき、ファイル名にYYYY-MM-DD-なんとか-かんとか.mdの形式で日付を入れないといけない。 ページのコンパイル時、この日付をもとに
+＿site |-YYYY |-MM |-DD |-なんとか-かんとか.html  という構造ができて、example.com/YYYY/MM/DD/なんとか-かんとかで見えるようにしてくれる。
+また、日付の情報を持たせたくない場合、Front-Formatterにpermalink属性を追加するとその名前でリンクを作ってくれる。 例えば、
+---- layout: default title: すごいメモ permalink: supermemo ----  とすると、example.com/supermemoで見えるようになる。 ファイル名の日付は適当に入れておけばOK。雑多なメモ置き場として使う時にべんり。</description>
+    </item>
+    
+    <item>
+      <title>Chinachu on CentOS 6.6 &#43; PT3</title>
+      <link>http://nibral.github.io/posts/2015-08-05-chinachu-on-centos/</link>
+      <pubDate>Wed, 05 Aug 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-08-05-chinachu-on-centos/</guid>
+      <description>事前準備 開発ツールを入れる
+sudo yum install yum-plugin-priorities sudo yum install kernel-devel sudo yum install gcc gcc-c++ make patch  gitはソースから新しいのを入れる
+sudo yum install zlib-devel tcl-devel tk-devel gettext-devel curl-devel expat-devel openssl-devel wget https://www.kernel.org/pub/software/scm/git/git-2.3.4.tar.gz tar zxvf git-2.3.4.tar.gz cd git-2.3.4 ./configure --with-curl=/usr/bin --prefix=/usr/local make prefix=/usr/local all sudo make prefix=/usr/local install  カードリーダー関連 yum install pcsc-lite pcsc-lite-devel pcsc-lite-libs yum install ccid  perl-gtkはRPMForgeから入れる
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm sudo rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt sudo rpm -K rpmforge-release-0.5.3-1.el6.rf.\*.rpm (Verify) sudo rpm -K rpmforge-release-0.</description>
+    </item>
+    
+    <item>
+      <title>PPTP VPN on RTX1000</title>
+      <link>http://nibral.github.io/posts/2015-08-05-pptp-vpn-on-rtx1000/</link>
+      <pubDate>Wed, 05 Aug 2015 12:00:00 +0900</pubDate>
+      
+      <guid>http://nibral.github.io/posts/2015-08-05-pptp-vpn-on-rtx1000/</guid>
+      <description>代理ARP LAN内の端末と通信するのに必要
+ip lan1 proxyarp on  PPTP設定 認証の設定
+pp select 1 pp select anonymous pp bind tunnel1 pp auth request mschap-v2 pp auth username ユーザ名 パスワード (IPアドレス) ppp ipcp ipaddress on ppp ipcp msext on ppp ccp type mppe-any  IP範囲割り当て
+ip pp remote address pool VPNクライアント用のIP(範囲指定可) pp ip mtu 1280  PPTPサービス起動
+pptp service type server pp enable anonymous pptp service on no pp select 1  トンネル割り当て tunnel select 1 tunnel encapsulation pptp no tunnel select 1  NAT追加 (ディスクリプタ1が定義済みと仮定)</description>
+    </item>
+    
+  </channel>
+</rss>
