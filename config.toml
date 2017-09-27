@@ -1,0 +1,66 @@
+baseURL = "http://nibral.github.io"
+title = "nibral.github.io"
+copyright = ""
+
+theme = "minimo"
+
+disqusShortname = ""
+googleAnalytics = ""
+Paginate = 20
+
+preserveTaxonomyNames = true
+
+[params]
+  description = "Hello."
+  dateFormat = "2006/01/02"
+  copyrightOwner = "nibral"
+  copyrightStartYear = "2015"
+  favicon = "favicon.ico"
+  hideEntryNavigation = true
+  customCSS = ["css/custom.css", "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"]
+  customJS = ["js/custom.js"]
+  hideSocialMenu = false
+  showReadTime = false
+
+[params.seo]
+  # Title Separator: - – — · • * ⋆ | ~ « » < >
+  titleSeparator = "•"
+
+[params.opengraph]
+  [params.opengraph.facebook]
+    admins = ""
+    appid = ""
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[social]
+  facebook = ""
+
+[author]
+  name = "nibral"
+
+[author.social]
+  github = "nibral"
+  twitter = "_nibral"
+  qiita = "nibral"
+
+[permalinks]
+  page = "/:slug/"
+
+#[[menu.main]]
+#  name = "Repo"
+#  weight = -70
+#  identifier = "repository"
+#  url = "https://github.com/MunifTanjim/minimo"
+
+# Language Configuration
+defaultContentLanguage = "ja"
+
+[languages]
+  # edit this block for your own language
+  [languages.en]
+    lang = "ja"
+    languageName = "Japanese"
+    weight = 1
