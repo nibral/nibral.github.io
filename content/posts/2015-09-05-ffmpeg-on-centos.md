@@ -31,6 +31,12 @@ Gitのダウンロード
     sudo make prefix=/usr/local install
 
 
+nasmリポジトリの追加
+----
+
+    sudo curl -o /etc/yum.repos.d/nasm.repo http://www.nasm.us/nasm.repo
+    sudo yum update
+
 ffmpeg 依存関係の解決
 ----
 
@@ -47,7 +53,7 @@ ffmpeg 依存関係の解決
 
 ダウンロード用のディレクトリを切る
 
-    mkdir ffmpeg-source
+    mkdir ffmpeg_sources
 
 yasm
 
@@ -89,7 +95,7 @@ ffmpegのダウンロードと展開
 
 ffmpegビルド設定
 
-    PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" \
+    PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig"
     ./configure --prefix="$HOME/ffmpeg_build" \
     --extra-cflags="-I$HOME/ffmpeg_build/include" \
     --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
@@ -102,7 +108,7 @@ ffmpegビルド設定
 
 *staticなバイナリにする場合の設定*
 
-    PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig/" \
+    PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig/"
     ./configure --prefix="$HOME/ffmpeg_build" \
     --disable-ffserver \
     --enable-version3 \
@@ -110,7 +116,7 @@ ffmpegビルド設定
     --extra-cflags="-I$HOME/ffmpeg_build/include -static" \
     --extra-ldflags="-L$HOME/ffmpeg_build/lib -static" \
     --bindir="$HOME/bin" \
-    --pkg-config-flags="--static" \
+    --pkg-config-flags="--Bstatic" \
     --enable-gpl \
     --enable-nonfree \
     --enable-libfdk-aac \
@@ -121,7 +127,7 @@ ffmpegビルド設定
 ビルド
 
     make
-    make install
+    sudo make install
     make distclean
 
 shellのハッシュ更新
