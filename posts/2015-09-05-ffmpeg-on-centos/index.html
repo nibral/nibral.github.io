@@ -9,10 +9,9 @@ Git yumのパッケージが古いので自分でビルドする
 git 依存関係の解決
 sudo yum install curl-devel expat-devel gcc gettext-devel make openssl-devel zlib-devel perl-ExtUtils-MakeMaker  Gitのダウンロード
 wget https://www.kernel.org/pub/software/scm/git/git-x.x.x.tar.gz  展開してビルド、インストール
-tar -zxf git-x.x.x.tar.gz cd git-x.x.x make prefix=/usr/local all sudo make prefix=/usr/local install  ffmpeg 依存関係の解決 sudo yum install autoconf automake cmake freetype-devel gcc-c&#43;&#43; libtool nasm pkgconfig  変更点
+tar -zxf git-x.x.x.tar.gz cd git-x.x.x make prefix=/usr/local all sudo make prefix=/usr/local install  nasmリポジトリの追加 sudo curl -o /etc/yum.repos.d/nasm.repo http://www.nasm.us/nasm.repo sudo yum update  ffmpeg 依存関係の解決 sudo yum install autoconf automake cmake freetype-devel gcc-c&#43;&#43; libtool nasm pkgconfig  変更点
  gcc,make,zlib-devel…gitのビルドでインストール済 git…上でビルドしたものと競合 mercurial…libx265をダウンロードしないので不要  ビルド ダウンロード用のディレクトリを切る
-mkdir ffmpeg-source  yasm
-cd ~/ffmpeg_sources git clone --depth 1 git://github.com/yasm/yasm.git cd yasm autoreconf -fiv .'>
+mkdir ffmpeg_sources  yasm'>
 
 <meta property='og:title' content='ffmpeg on CentOS • nibral'>
 <meta property='og:description' content='はじめに 公式のインストールガイドを参考に、余計なオプション入れてないffmpegをビルドしよう(x264とfdk_aac)
@@ -20,10 +19,9 @@ Git yumのパッケージが古いので自分でビルドする
 git 依存関係の解決
 sudo yum install curl-devel expat-devel gcc gettext-devel make openssl-devel zlib-devel perl-ExtUtils-MakeMaker  Gitのダウンロード
 wget https://www.kernel.org/pub/software/scm/git/git-x.x.x.tar.gz  展開してビルド、インストール
-tar -zxf git-x.x.x.tar.gz cd git-x.x.x make prefix=/usr/local all sudo make prefix=/usr/local install  ffmpeg 依存関係の解決 sudo yum install autoconf automake cmake freetype-devel gcc-c&#43;&#43; libtool nasm pkgconfig  変更点
+tar -zxf git-x.x.x.tar.gz cd git-x.x.x make prefix=/usr/local all sudo make prefix=/usr/local install  nasmリポジトリの追加 sudo curl -o /etc/yum.repos.d/nasm.repo http://www.nasm.us/nasm.repo sudo yum update  ffmpeg 依存関係の解決 sudo yum install autoconf automake cmake freetype-devel gcc-c&#43;&#43; libtool nasm pkgconfig  変更点
  gcc,make,zlib-devel…gitのビルドでインストール済 git…上でビルドしたものと競合 mercurial…libx265をダウンロードしないので不要  ビルド ダウンロード用のディレクトリを切る
-mkdir ffmpeg-source  yasm
-cd ~/ffmpeg_sources git clone --depth 1 git://github.com/yasm/yasm.git cd yasm autoreconf -fiv .'>
+mkdir ffmpeg_sources  yasm'>
 <meta property='og:url' content='http://nibral.github.io/posts/2015-09-05-ffmpeg-on-centos/'>
 <meta property='og:site_name' content='nibral.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2015-09-05T12:00:00&#43;09:00'/><meta property='article:modified_time' content='2015-09-05T12:00:00&#43;09:00'/>
@@ -147,6 +145,12 @@ make prefix=/usr/local all
 sudo make prefix=/usr/local install
 </code></pre>
 
+<h2 id="nasmリポジトリの追加">nasmリポジトリの追加</h2>
+
+<pre><code>sudo curl -o /etc/yum.repos.d/nasm.repo http://www.nasm.us/nasm.repo
+sudo yum update
+</code></pre>
+
 <h2 id="ffmpeg-依存関係の解決">ffmpeg 依存関係の解決</h2>
 
 <pre><code>sudo yum install autoconf automake cmake freetype-devel gcc-c++ libtool nasm pkgconfig
@@ -164,7 +168,7 @@ sudo make prefix=/usr/local install
 
 <p>ダウンロード用のディレクトリを切る</p>
 
-<pre><code>mkdir ffmpeg-source
+<pre><code>mkdir ffmpeg_sources
 </code></pre>
 
 <p>yasm</p>
@@ -211,7 +215,7 @@ cd ffmpeg
 
 <p>ffmpegビルド設定</p>
 
-<pre><code>PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot; \
+<pre><code>PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig&quot;
 ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; \
 --extra-cflags=&quot;-I$HOME/ffmpeg_build/include&quot; \
 --extra-ldflags=&quot;-L$HOME/ffmpeg_build/lib&quot; \
@@ -225,7 +229,7 @@ cd ffmpeg
 
 <p><em>staticなバイナリにする場合の設定</em></p>
 
-<pre><code>PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig/&quot; \
+<pre><code>PKG_CONFIG_PATH=&quot;$HOME/ffmpeg_build/lib/pkgconfig/&quot;
 ./configure --prefix=&quot;$HOME/ffmpeg_build&quot; \
 --disable-ffserver \
 --enable-version3 \
@@ -233,7 +237,7 @@ cd ffmpeg
 --extra-cflags=&quot;-I$HOME/ffmpeg_build/include -static&quot; \
 --extra-ldflags=&quot;-L$HOME/ffmpeg_build/lib -static&quot; \
 --bindir=&quot;$HOME/bin&quot; \
---pkg-config-flags=&quot;--static&quot; \
+--pkg-config-flags=&quot;--Bstatic&quot; \
 --enable-gpl \
 --enable-nonfree \
 --enable-libfdk-aac \
@@ -245,7 +249,7 @@ cd ffmpeg
 <p>ビルド</p>
 
 <pre><code>make
-make install
+sudo make install
 make distclean
 </code></pre>
 
